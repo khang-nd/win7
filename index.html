@@ -1,0 +1,721 @@
+<!--
+    WINDOWS 7 SIMULATION
+      © 2019 - KhangND
+Do not copy without permission
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="lib/font-awesome.min.css">
+    <link rel="stylesheet" href="css/core.css">
+    <!-- libs start -->
+    <script src="lib/jquery-3.1.1.min.js"></script>
+    <script src="lib/jquery-ui.min.js"></script>
+    <script src="lib/jquery.ui.touch-punch.min.js"></script>
+    <script src="lib/html2canvas.min.js"></script>
+    <!-- libs end | core starts -->
+    <script src="js/core.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/calculator.js"></script>
+    <script src="js/snipping.js"></script>
+    <script src="js/mediaplayer.js"></script>
+    <!-- core ends -->
+</head>
+
+<body id="windows-container" class="aero-1">
+    <div id="logon">
+        <div id="logon-wrapper">
+            <div id="user"><img src="img/acc/user.bmp" width="100"></div>
+            <div id="name">Administrator</div>
+            <div id="input">
+                <input type="text" id="password" placeholder="khangnd" autofocus>
+                <div class="button round" id="start">&#x279C;</div>
+            </div>
+        </div>
+    </div>
+    <div id="windows">
+        <div id="desktop">
+            <div id="desktop-menu">
+                <div class="menu-item has-sub">View
+                    <div id="sub-menu">
+                        <div class="menu-item ico-size" data-size="lg">Large icons</div>
+                        <div class="menu-item ico-size active" data-size="md">Medium icons</div>
+                        <div class="menu-item ico-size" data-size="sm">Small icons</div>
+                        <hr>
+                        <div class="menu-item ico-hide active">Show desktop icon</div>
+                    </div>
+                </div>
+                <div class="menu-item refresh" id="refresh">Refresh</div>
+                <div class="menu-item folder" id="new-folder">New folder</div>
+                <div class="menu-item personal" data-toggle="window" data-target="#window-personal">Personalize</div>
+            </div>
+            <div id="desktop-icons" class="icons-md">
+                <div class="icon bin" data-toggle="window" data-target="#window-bin">
+                    <label>Recycle Bin</label>
+                </div>
+                <div class="icon computer" data-toggle="window" data-target="#window-computer">
+                    <label>My Computer</label>
+                </div>
+            </div>
+            <div class="window" id="window-about">
+                <div class="titlebar">
+                    <div class="title about">About</div>
+                    <div class="controls">
+                        <div class="control minimize" data-target="#window-about">–</div>
+                        <div class="control maximize" data-target="#window-about">□</div>
+                        <div class="control closewin" data-target="#window-about">×</div>
+                    </div>
+                </div>
+                <div class="container">
+                    <h2>
+                        Windows<sup class="text-50 text-normal">&reg;</sup> 7
+                        <small class="text-normal">Simulation</small>
+                    </h2>
+                    <p class="text-center text-75">version 2.3</p>
+                    <p>Components:</p>
+                    <ul>
+                        <li>HTML</li>
+                        <li>CSS</li>
+                        <li>JS</li>
+                    </ul>
+                    <p>Libraries</p>
+                    <ul>
+                        <li>jQuery</li>
+                        <li>jQueryUI</li>
+                        <li>jQueryUI Touch Punch</li>
+                        <li>html2canvas</li>
+                    </ul>
+                    <p>Functional features:</p>
+                    <ul>
+                        <li>Windows GUI</li>
+                        <li>User log on/log off</li>
+                        <li>Windows (open, close, minimize, maximize, move)</li>
+                        <li>Recycle Bin (UI)</li>
+                        <li>My Computer (UI)</li>
+                        <li>Calculator (Standard)</li>
+                        <li>Internet Explorer (Browse, Search Bing)</li>
+                        <li>Desktop Menu (View, Refresh, New Folder, Personalize) - hold your finger to open</li>
+                        <li>Personalize (Aero themes, Basic themes)</li>
+                        <li>Notepad (File, Edit, Format)</li>
+                        <li>Snipping Tool (Rectangular, Full-screen)</li>
+                        <li>Battery (Adjust brightness)</li>
+                        <li>Calendar</li>
+                        <li>Media Player</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="window" id="window-calc">
+                <div class="titlebar">
+                    <div class="title calc">Calculator</div>
+                    <div class="controls">
+                        <div class="control minimize" data-target="#window-calc">–</div>
+                        <div class="control closewin" data-target="#window-calc">×</div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div id="display">
+                        <input disabled id="operation">
+                        <input disabled id="result" maxlength="20" value="0">
+                    </div>
+                    <table class="btns">
+                        <tr>
+                            <td class="bt btn-fnc"><b>←</b></td>
+                            <td class="bt btn-fnc">CE</td>
+                            <td class="bt btn-fnc">C</td>
+                            <td class="bt btn-fnc">±</td>
+                            <td class="bt btn-fnc">√</td>
+                        </tr>
+                        <tr>
+                            <td class="bt btn-bright btn-num">7</td>
+                            <td class="bt btn-bright btn-num">8</td>
+                            <td class="bt btn-bright btn-num">9</td>
+                            <td class="bt btn-fnc">/</td>
+                            <td class="bt btn-fnc">%</td>
+                        </tr>
+                        <tr>
+                            <td class="bt btn-bright btn-num">4</td>
+                            <td class="bt btn-bright btn-num">5</td>
+                            <td class="bt btn-bright btn-num">6</td>
+                            <td class="bt btn-fnc">*</td>
+                            <td class="bt btn-fnc">1/x</td>
+                        </tr>
+                        <tr>
+                            <td class="bt btn-bright btn-num">1</td>
+                            <td class="bt btn-bright btn-num">2</td>
+                            <td class="bt btn-bright btn-num">3</td>
+                            <td class="bt btn-fnc">-</td>
+                            <td class="bt btn-fnc text-200" rowspan="2">=</td>
+                        </tr>
+                        <tr>
+                            <td class="bt btn-bright btn-num" colspan="2">0</td>
+                            <td class="bt btn-bright btn-num">.</td>
+                            <td class="bt btn-fnc">+</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="window" id="window-bin">
+                <div class="titlebar">
+                    <div class="title bin">Recycle Bin</div>
+                    <div class="controls">
+                        <div class="control minimize" data-target="#window-bin">–</div>
+                        <div class="control maximize" data-target="#window-bin">□</div>
+                        <div class="control closewin" data-target="#window-bin">×</div>
+                    </div>
+                </div>
+                <div class="addrbar">
+                    <div>
+                        <div class="button round back">&#x279C;</div>
+                        <div class="button round">&#x279C;</div>
+                    </div>
+                    <div class="addr bin"><label>Recycle Bin</label></div>
+                    <div class="input">
+                        <input type="search" placeholder="Search Recycle Bin">
+                    </div>
+                </div>
+                <div class="toolbar">
+                </div>
+                <div class="container">
+                    <div class="text-center text-muted">This folder is empty.</div>
+                    <!--<div class="icons">-->
+                    <!--    <div class="column">-->
+                    <!--        <div class="icon icon-sm file"><label>My file</label></div>-->
+                    <!--    </div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+            <div class="window" id="window-ie">
+                <div class="titlebar">
+                    <div class="title ie">Windows Internet Explorer</div>
+                    <div class="controls">
+                        <div class="control minimize" data-target="#window-ie">–</div>
+                        <div class="control maximize" data-target="#window-ie">□</div>
+                        <div class="control closewin" data-target="#window-ie">×</div>
+                    </div>
+                </div>
+                <div class="addrbar">
+                    <div>
+                        <div class="button round back">&#x279C;</div>
+                        <div class="button round">&#x279C;</div>
+                    </div>
+                    <div class="input">
+                        <input type="text" id="webaddr" value="https://www.sololearn.com/Profile/14575559">
+                    </div>
+                    <div class="input">
+                        <input type="search" id="bing" placeholder="Bing">
+                    </div>
+                </div>
+                <div class="toolbar">
+                    <div class="toolbar-item">Favorites</div>
+                    <div class="toolbar-item">Bookmarks</div>
+                </div>
+                <div class="container p-0">
+                    <iframe id="webpage" frameborder="0" width="100%" height="100%"
+                        data-html2canvas-ignore="true"></iframe>
+                </div>
+            </div>
+            <div class="window" id="window-notepad" data-child="#window-font">
+                <div class="titlebar">
+                    <div class="title notepad">Untitled - Notepad</div>
+                    <div class="controls">
+                        <div class="control minimize" data-target="#window-notepad">–</div>
+                        <div class="control maximize" data-target="#window-notepad">□</div>
+                        <div class="control closewin" data-target="#window-notepad">×</div>
+                    </div>
+                </div>
+                <div class="toolbar">
+                    <div class="toolbar-item">File
+                        <ul class="toolbar-item-lv2">
+                            <li id="notepad-new">New</li>
+                            <li id="notepad-open" class="text-muted">Open</li>
+                            <li id="notepad-save" class="text-muted">Save</li>
+                            <hr>
+                            <li class="closewin" data-target="#window-notepad">Exit</li>
+                        </ul>
+                    </div>
+                    <div class="toolbar-item">Edit
+                        <ul class="toolbar-item-lv2">
+                            <li id="notepad-undo">Undo</li>
+                            <hr>
+                            <li id="notepad-cut" class="text-muted">Cut</li>
+                            <li id="notepad-copy" class="text-muted">Copy</li>
+                            <li id="notepad-paste" class="text-muted">Paste</li>
+                            <li id="notepad-del" class="text-muted">Delete</li>
+                            <hr>
+                            <li id="notepad-find" class="text-muted">Find...</li>
+                            <li id="notepad-findnext" class="text-muted">Find Next</li>
+                            <li id="notepad-replace" class="text-muted">Replace...</li>
+                            <li id="notepad-goto" class="text-muted">Go to...</li>
+                            <hr>
+                            <li id="notepad-all">Select All</li>
+                            <li id="notepad-datetime">Time/Date</li>
+                        </ul>
+                    </div>
+                    <div class="toolbar-item">Format
+                        <ul class="toolbar-item-lv2">
+                            <li id="notepad-wrap">Word Wrap</li>
+                            <li data-toggle="window" data-target="#window-font">Font...</li>
+                        </ul>
+                    </div>
+                    <div class="toolbar-item">View
+                        <ul class="toolbar-item-lv2">
+                            <li id="notepad-statbar" class="text-muted">Status Bar</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="container p-0">
+                    <textarea id="notepad-editor"></textarea>
+                </div>
+            </div>
+            <div class="window window-child" id="window-font">
+                <div class="titlebar">
+                    <div class="title p-0">Font</div>
+                    <div class="controls">
+                        <div class="control closewin" data-target="#window-font">×</div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="font-row">
+                        <div class="column-font">
+                            <div class="text-75">Font:</div>
+                            <ul class="list">
+                                <li>
+                                    <input type="radio" name="font-family" id="font-lucida"
+                                        value='"lucida console",monospace' checked>
+                                    <label for="font-lucida" style='font-family: "lucida console",monospace'>Lucida
+                                        Console</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-family" id="font-verdana" value="verdana,monospace">
+                                    <label for="font-verdana" style="font-family: verdana,monospace">Verdana</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-family" id="font-arial" value="arial,sans-serif">
+                                    <label for="font-arial" style="font-family: arial,sans-serif">Arial</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-family" id="font-impact" value="impact,sans-serif">
+                                    <label for="font-impact" style="font-family: impact,sans-serif">Impact</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-family" id="font-times" value="times,serif">
+                                    <label for="font-times" style="font-family: times,serif">Times New Roman</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-family" id="font-georgia" value="georgia,serif">
+                                    <label for="font-georgia" style="font-family: georgia,serif">Georgia</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="column-style">
+                            <div class="text-75">Style:</div>
+                            <ul class="list">
+                                <li>
+                                    <input type="radio" name="font-style" id="style-regular" value="normal,normal"
+                                        checked>
+                                    <label for="style-regular">Regular</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-style" id="style-italic" value="italic,normal">
+                                    <label for="style-italic" style="font-style: italic">Italic</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-style" id="style-bold" value="normal,bold">
+                                    <label for="style-bold" style="font-weight: bold">Bold</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-style" id="style-bi" value="italic,bold">
+                                    <label for="style-bi" style="font-style: italic; font-weight: bold">Bold
+                                        Italic</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="column-size">
+                            <div class="text-75">Size:</div>
+                            <ul class="list">
+                                <li>
+                                    <input type="radio" name="font-size" id="size-10" value="10" checked>
+                                    <label for="size-10">10</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-size" id="size-11" value="11">
+                                    <label for="size-11">11</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-size" id="size-12" value="12">
+                                    <label for="size-12">12</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-size" id="size-14" value="14">
+                                    <label for="size-14">14</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-size" id="size-18" value="18">
+                                    <label for="size-18">18</label>
+                                </li>
+                                <li>
+                                    <input type="radio" name="font-size" id="size-25" value="25">
+                                    <label for="size-25">25</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="font-row flex-right mt-5">
+                        <button class="bt bt-primary closewin" data-target="#window-font" id="notepad-font">OK</button>
+                        <button class="bt bt-secondary closewin" data-target="#window-font">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="window" id="window-personal">
+                <div class="titlebar">
+                    <div class="title personal">Personalize</div>
+                    <div class="controls">
+                        <div class="control minimize" data-target="#window-personal">–</div>
+                        <div class="control maximize" data-target="#window-personal">□</div>
+                        <div class="control closewin" data-target="#window-personal">×</div>
+                    </div>
+                </div>
+                <div class="addrbar">
+                    <div>
+                        <div class="button round back">&#x279C;</div>
+                        <div class="button round">&#x279C;</div>
+                    </div>
+                    <div class="addr personal"><label>Personalize</label></div>
+                </div>
+                <div class="container">
+                    <div class="title-1">Change the visuals and sounds on your computer</div>
+                    Click a theme to change the desktop background, window color and sound all at once.
+                    <div class="themes">
+                        <div class="headline">Aero Themes (4)</div>
+                        <ul class="theme-collection">
+                            <li class="theme selected" id="aero-1">
+                                <div class="theme-bg"></div>
+                                <div class="theme-color"></div>
+                                <label>Windows 7</label>
+                            </li>
+                            <li class="theme" id="aero-2">
+                                <div class="theme-bg"></div>
+                                <div class="theme-color"></div>
+                                <label>Architecture</label>
+                            </li>
+                            <li class="theme" id="aero-3">
+                                <div class="theme-bg"></div>
+                                <div class="theme-color"></div>
+                                <label>Landscapes</label>
+                            </li>
+                            <li class="theme" id="aero-4">
+                                <div class="theme-bg"></div>
+                                <div class="theme-color"></div>
+                                <label>Nature</label>
+                            </li>
+                        </ul>
+                        <div class="headline">Basic and High Contrast Themes (4)</div>
+                        <ul class="theme-collection">
+                            <li class="theme theme-basic" id="basic-1">
+                                <div class="theme-bg"></div>
+                                <div class="theme-color"></div>
+                                <label>Windows 7 Basic</label>
+                            </li>
+                            <li class="theme theme-basic" id="basic-2">
+                                <div class="theme-bg"></div>
+                                <div class="theme-color"></div>
+                                <label>Windows Classic</label>
+                            </li>
+                            <li class="theme theme-basic" id="basic-3">
+                                <div class="theme-bg"></div>
+                                <div class="theme-color"></div>
+                                <label>High Contrast Black</label>
+                            </li>
+                            <li class="theme theme-basic" id="basic-4">
+                                <div class="theme-bg"></div>
+                                <div class="theme-color"></div>
+                                <label>High Contrast White</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>Current theme: <b id="theme-name">Windows 7</b></p>
+                </div>
+            </div>
+            <div class="window" id="window-computer">
+                <div class="titlebar">
+                    <div class="title computer">Computer</div>
+                    <div class="controls">
+                        <div class="control minimize" data-target="#window-computer">–</div>
+                        <div class="control maximize" data-target="#window-computer">□</div>
+                        <div class="control closewin" data-target="#window-computer">×</div>
+                    </div>
+                </div>
+                <div class="addrbar">
+                    <div>
+                        <div class="button round back">&#x279C;</div>
+                        <div class="button round">&#x279C;</div>
+                    </div>
+                    <div class="addr computer"><label>Computer</label></div>
+                    <div class="input">
+                        <input type="search" placeholder="Search Computer">
+                    </div>
+                </div>
+                <div class="toolbar">
+                    <div class="toolbar-item">Organize</div>
+                </div>
+                <div class="container">
+                    <div class="headline" data-toggle="expand" data-target="#hdd">Hard Disk Drives (3)</div>
+                    <div class="devices" id="hdd">
+                        <div class="device disk-os" id="disk-C">
+                            <div class="name">
+                                <label>WIN</label>
+                                (C:)
+                            </div>
+                            <div class="storage-bar"></div>
+                            <div class="storage-txt"></div>
+                        </div>
+                        <div class="device disk-data" id="disk-D">
+                            <div class="name">
+                                <label>DATA</label>
+                                (D:)
+                            </div>
+                            <div class="storage-bar"></div>
+                            <div class="storage-txt"></div>
+                        </div>
+                        <div class="device disk-data" id="disk-E">
+                            <div class="name">
+                                <label>Local Disk</label>
+                                (E:)
+                            </div>
+                            <div class="storage-bar"></div>
+                            <div class="storage-txt"></div>
+                        </div>
+                    </div>
+                    <div class="headline" data-toggle="expand" data-target="#cdd">Devices with Removable Storage (2)
+                    </div>
+                    <div class="devices" id="cdd">
+                        <div class="device disk-cd">
+                            <div class="name">DVD RW Drive (F:)</div>
+                        </div>
+                        <div class="device disk-usb" id="disk-G">
+                            <div class="name">
+                                <label>Removable Disk</label>
+                                (G:)
+                            </div>
+                            <div class="storage-bar"></div>
+                            <div class="storage-txt"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="window" id="window-snipping">
+                <div class="titlebar">
+                    <div class="title snipping">Snipping Tool</div>
+                    <div class="controls">
+                        <div class="control minimize" data-target="#window-snipping">–</div>
+                        <div class="control closewin" data-target="#window-snipping">×</div>
+                    </div>
+                </div>
+                <div class="toolbar">
+                    <div class="toolbar-item snipping">New
+                        <ul class="toolbar-item-lv2">
+                            <li class="text-muted">Free-form Snip</li>
+                            <li class="snip" id="snip-rect">Rectangular Snip</li>
+                            <li class="text-muted" id="snip-win">Window Snip</li>
+                            <li class="snip" id="snip-full">Full-screen Snip</li>
+                        </ul>
+                    </div>
+                    <div class="toolbar-item cancel" id="snip-cancel">Cancel</div>
+                </div>
+                <div class="container direction" id="snip-result">Select snip mode to start snipping.</div>
+            </div>
+            <div class="window small" id="window-player" style="display:flex">
+                <div class="titlebar">
+                    <div class="title player">Windows Media Player</div>
+                    <div class="controls">
+                        <div class="control minimize" data-target="#window-player">–</div>
+                        <div class="control maximize" data-target="#window-player">□</div>
+                        <div class="control closewin" data-target="#window-player">×</div>
+                    </div>
+                </div>
+                <div class="addrbar">
+                    <div>
+                        <div class="button round back">&#x279C;</div>
+                        <div class="button round">&#x279C;</div>
+                    </div>
+                    <div class="addr pl-0">
+                        <label>Library</label>
+                        <label>Music</label>
+                    </div>
+                </div>
+                <div class="toolbar">
+                    <div class="toolbar-item has-sub">
+                        Organize
+                        <ul class="toolbar-item-lv2">
+                            <li class="has-sub">
+                                Manage libraries
+                                <ul class="toolbar-item-lv3">
+                                    <li>Music</li>
+                                    <li>Videos</li>
+                                    <li>Pictures</li>
+                                </ul>
+                            </li>
+                            <li class="text-muted">Options</li>
+                        </ul>
+                    </div>
+                    <div class="toolbar-item text-muted">Stream</div>
+                </div>
+                <div class="container">
+                    <div id="player-list">
+                        <noitem>
+                            There are no items in your library.<br>
+                            Click Organize, then click Manage libraries to include items.
+                        </noitem>
+                    </div>
+                </div>
+                <div id="player-footer">
+                    <input id="player-progress" type="range" value="0">
+                    <div id="player-info">
+                        <div id="song"></div>
+                        <div id="duration"></div>
+                        <div id="player-controls">
+                            <div class="player-control" id="random">
+                                <i class="fa fa-random rotate-270"></i>
+                            </div>
+                            <div class="player-control" id="repeat">
+                                <i class="fa fa-repeat rotate-270"></i>
+                            </div>
+                            <div class="player-control" id="stop">
+                                <i class="fa fa-stop"></i>
+                            </div>
+                            <div class="player-control" id="prev">
+                                <i class="fa fa-fast-backward"></i>
+                            </div>
+                            <div class="player-control" id="play">
+                                <i class="fa fa-play ml-5"></i>
+                            </div>
+                            <div class="player-control" id="next">
+                                <i class="fa fa-fast-forward"></i>
+                            </div>
+                            <div class="player-control" id="mute">
+                                <i class="fa fa-volume-up"></i>
+                            </div>
+                            <div class="player-control" id="volume">
+                                <input type="range" min="0" max="100" step="1" value="100">
+                            </div>
+                        </div>
+                        <div id="switchMode"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="window" id="window-wait">
+                <div class="container text-center text-bold">Please Wait</div>
+            </div>
+        </div>
+        <div id="taskbar">
+            <div id="start-menu">
+                <div id="programs">
+                    <div class="program about" data-toggle="window" data-target="#window-about">About</div>
+                    <div class="program calc" data-toggle="window" data-target="#window-calc">Calculator</div>
+                    <div class="program ie" data-toggle="window" data-target="#window-ie">Internet Explorer</div>
+                    <div class="program notepad" data-toggle="window" data-target="#window-notepad">Notepad</div>
+                    <div class="program snipping" data-toggle="window" data-target="#window-snipping">Snipping Tool
+                    </div>
+                    <div class="program player" data-toggle="window" data-target="#window-player">Windows Media Player
+                    </div>
+                    <div class="program paint">Paint</div>
+                    <div class="program"></div>
+                    <div class="program"></div>
+                    <div class="program" id="search">
+                        <input type="search" placeholder="Search programs and files">
+                    </div>
+                </div>
+                <div id="links">
+                    <div class="link">Users</div>
+                    <div class="link">Documents</div>
+                    <div class="link">Pictures</div>
+                    <div class="link">Music</div>
+                    <hr>
+                    <div class="link" data-toggle="window" data-target="#window-computer">Computer</div>
+                    <hr>
+                    <div class="link">Control Panel</div>
+                    <div class="link">Devices and Printers</div>
+                    <div class="link">Default Programs</div>
+                    <div class="link">Help and Support</div>
+                    <div class="link">
+                        <div class="button" id="logoff">Log off</div>
+                    </div>
+                </div>
+            </div>
+            <div class="taskbar-item" id="start-button"></div>
+            <div class="taskbar-item right" id="show-desktop"></div>
+            <div class="taskbar-item right" id="calendar" data-toggle="popup">
+                <div id="time"></div>
+                <div id="date"></div>
+            </div>
+            <div class="taskbar-item right" id="battery" data-toggle="popup">
+                <div id="gauge"></div>
+            </div>
+            <div class="taskbar-item right" id="network" data-toggle="popup">
+                <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="taskbar-popup" id="popup-calendar">
+                <div class="top"><a id="today"></a></div>
+                <div class="body">
+                    <div id="date">
+                        <div id="month">
+                            <div id="prev"></div>
+                            <div id="curr"></div>
+                            <div id="next"></div>
+                        </div>
+                        <ul id="wdays">
+                            <li>Su</li>
+                            <li>Mo</li>
+                            <li>Tu</li>
+                            <li>We</li>
+                            <li>Th</li>
+                            <li>Fr</li>
+                            <li>Sa</li>
+                        </ul>
+                        <ul id="days"></ul>
+                    </div>
+                    <div id="time">
+                        <div id="clock">
+                            <div id="center"></div>
+                            <div id="handH"></div>
+                            <div id="handM"></div>
+                            <div id="handS"></div>
+                        </div>
+                        <div id="hour">00:00:00</div>
+                    </div>
+                </div>
+                <div class="bottom"><a>Change date and time settings...</a></div>
+            </div>
+            <div class="taskbar-popup" id="popup-battery">
+                <div class="top">
+                    <div id="battery-3d">
+                        <div class="gauge"></div>
+                        <div class="shadow"></div>
+                    </div>
+                    <span id="battery-text">100% remaining</span>
+                </div>
+                <div class="body">
+                    Select a power plan:
+                    <div>
+                        <input type="radio" id="power-balanced" name="power-plan" checked>
+                        <label for="power-balanced">Balanced</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="power-saver" name="power-plan">
+                        <label for="power-saver">Power saver</label>
+                    </div>
+                </div>
+                <div class="bottom">
+                    Adjust screen brightness
+                    <div><input type="range" id="power-bright" max="1.2" min="0.5" step="0.1" value="1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <audio id="startup"
+        src="https://vignette.wikia.nocookie.net/khangnd/images/5/58/Windows7-startup-sound.ogg"></audio>
+</body>
+
+</html>
