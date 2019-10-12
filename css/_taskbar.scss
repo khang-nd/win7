@@ -51,7 +51,7 @@
 #start-button {
     @include size(30px);
     margin: 3px;
-    background: url(/img/start-button.png) no-repeat;
+    background: url($iconPath + 'start-button.png') no-repeat;
     background-size: contain;
     float: left;
 

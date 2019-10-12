@@ -1,15 +1,10 @@
 // VARIABLES
+$iconPath: '../resources/ico/';
+$bgPath : '../resources/bg/';
+$accPath: '../resources/acc/';
 $screenw: 100vw;
 $screenh: 100vh;
 $headline: #3083b7;
-$aero-1 : url(../img/bg/default.jpg);
-$aero-2 : url(../img/bg/architecture.jpg);
-$aero-3 : url(../img/bg/landscape.jpg);
-$aero-4 : url(../img/bg/nature.jpg);
-$aero-1-color: rgba(170, 209, 251, 0.6);
-$aero-2-color: rgba(85, 132, 200, 0.6);
-$aero-3-color: rgba(171, 171, 171, 0.6);
-$aero-4-color: rgba(179, 155, 207, 0.6);
 
 // MIXINS
 @mixin transform($prop) {
@@ -20,9 +15,9 @@ $aero-4-color: rgba(179, 155, 207, 0.6);
     transform: $prop;
 }
 
-@mixin icon($class, $path) {
+@mixin icon($class, $name) {
     .#{$class} {
-        background-image: url('../img/'+ $path)
+        background-image: url($iconPath + $name)
     }
 }
 
@@ -147,7 +142,8 @@ $aero-4-color: rgba(179, 155, 207, 0.6);
 @include icon('disk-os', 'disk-os.ico');
 @include icon('disk-cd', 'disk-cd.ico');
 @include icon('cancel', 'cancel.ico');
-@include icon('player', 'player.png');
+@include icon('save', 'save.ico');
+@include icon('player', 'player.ico');
 
 // IMPORTS
 @import "desktop";
@@ -199,15 +195,6 @@ label {
 h2 {
     text-align: center;
     margin: 0;
-}
-
-.badge {
-    float: right;
-    padding: 0 5px;
-    display: inline-block;
-    color: #fff;
-    background: #16c60c;
-    line-height: 1;
 }
 
 .button.back {

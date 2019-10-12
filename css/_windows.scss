@@ -379,6 +379,14 @@
                 position: 5px center;
             }
 
+            &.save {
+                display: none;
+                background: {
+                    size: 50%;
+                    position: center;
+                }
+            }
+
             &:hover {
                 border-color: #555;
                 box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4)

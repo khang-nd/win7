@@ -7,6 +7,7 @@ Do not copy without permission
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="lib/font-awesome.min.css">
     <link rel="stylesheet" href="css/core.css">
     <!-- libs start -->
@@ -14,19 +15,23 @@ Do not copy without permission
     <script src="lib/jquery-ui.min.js"></script>
     <script src="lib/jquery.ui.touch-punch.min.js"></script>
     <script src="lib/html2canvas.min.js"></script>
-    <!-- libs end | core starts -->
+    <!-- libs end | components start -->
     <script src="js/core.js"></script>
+    <script src="js/windows.js"></script>
+    <script src="js/window.js"></script>
     <script src="js/calendar.js"></script>
     <script src="js/calculator.js"></script>
+    <script src="js/browser.js"></script>
+    <script src="js/notepad.js"></script>
     <script src="js/snipping.js"></script>
     <script src="js/mediaplayer.js"></script>
-    <!-- core ends -->
+    <!-- components ends -->
 </head>
 
 <body id="windows-container" class="aero-1">
     <div id="logon">
         <div id="logon-wrapper">
-            <div id="user"><img src="img/acc/user.bmp" width="100"></div>
+            <div id="user"><img src="resources/acc/user.bmp" width="100"></div>
             <div id="name">Administrator</div>
             <div id="input">
                 <input type="text" id="password" placeholder="khangnd" autofocus>
@@ -200,7 +205,7 @@ Do not copy without permission
                         <div class="button round">&#x279C;</div>
                     </div>
                     <div class="input">
-                        <input type="text" id="webaddr" value="https://www.sololearn.com/Profile/14575559">
+                        <input type="text" id="webaddr">
                     </div>
                     <div class="input">
                         <input type="search" id="bing" placeholder="Bing">
@@ -211,8 +216,7 @@ Do not copy without permission
                     <div class="toolbar-item">Bookmarks</div>
                 </div>
                 <div class="container p-0">
-                    <iframe id="webpage" frameborder="0" width="100%" height="100%"
-                        data-html2canvas-ignore="true"></iframe>
+                    <iframe id="webpage" frameborder="0" width="100%" height="100%" data-html2canvas-ignore="true"></iframe>
                 </div>
             </div>
             <div class="window" id="window-notepad" data-child="#window-font">
@@ -516,12 +520,13 @@ Do not copy without permission
                     <div class="toolbar-item snipping">New
                         <ul class="toolbar-item-lv2">
                             <li class="text-muted">Free-form Snip</li>
-                            <li class="snip" id="snip-rect">Rectangular Snip</li>
+                            <li class="snip-start" id="snip-rect">Rectangular Snip</li>
                             <li class="text-muted" id="snip-win">Window Snip</li>
-                            <li class="snip" id="snip-full">Full-screen Snip</li>
+                            <li class="snip-start" id="snip-full">Full-screen Snip</li>
                         </ul>
                     </div>
                     <div class="toolbar-item cancel" id="snip-cancel">Cancel</div>
+                    <a class="toolbar-item save" id="snip-save"></a>
                 </div>
                 <div class="container direction" id="snip-result">Select snip mode to start snipping.</div>
             </div>
@@ -584,13 +589,13 @@ Do not copy without permission
                             <div class="player-control" id="stop">
                                 <i class="fa fa-stop"></i>
                             </div>
-                            <div class="player-control" id="prev">
+                            <div class="player-control" id="play-prev">
                                 <i class="fa fa-fast-backward"></i>
                             </div>
                             <div class="player-control" id="play">
                                 <i class="fa fa-play ml-5"></i>
                             </div>
-                            <div class="player-control" id="next">
+                            <div class="player-control" id="play-next">
                                 <i class="fa fa-fast-forward"></i>
                             </div>
                             <div class="player-control" id="mute">
@@ -645,7 +650,7 @@ Do not copy without permission
                 </div>
             </div>
             <div class="taskbar-item" id="start-button"></div>
-            <div class="taskbar-item right" id="show-desktop"></div>
+            <div class="taskbar-item right" id="show-desktop" data-action="show"></div>
             <div class="taskbar-item right" id="calendar" data-toggle="popup">
                 <div id="time"></div>
                 <div id="date"></div>
@@ -714,8 +719,7 @@ Do not copy without permission
             </div>
         </div>
     </div>
-    <audio id="startup"
-        src="https://vignette.wikia.nocookie.net/khangnd/images/5/58/Windows7-startup-sound.ogg"></audio>
+    <audio id="startup" src="resources/sound/Windows7-startup-sound.ogg"></audio>
 </body>
 
 </html>

@@ -2,7 +2,7 @@
 #logon {
     @include size($screenw, $screenh);
     text-align: center;
-    background: url(../img/bg/login.jpg);
+    background: url($bgPath + 'login.jpg');
     background-position: center;
     background-size: cover;
 }

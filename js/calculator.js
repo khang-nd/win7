@@ -1,11 +1,11 @@
-function calculator() {
-    
-    var $res = $('#result'),
-        $op = $('#operation'),
+var Calculator = function () {
+
+    var $result = this.result,
+        $operation = this.operation,
         flag = false; // calculating flag
 
-    var input = e => {
-        var value = $res.val(),
+    this.numbers.click(e => {
+        var value = $result.val(),
             input = e.target.innerText;
 
         if (input === '.' && value.indexOf('.') > 0 // only allow 1 decimal point
@@ -13,19 +13,19 @@ function calculator() {
             value.length === 20) // limit 20 digits
             return;
         else if (input === '.' && value === '0') // add zero before decimal point
-            $res.val('0.');
+            $result.val('0.');
         else if (flag || value === '0') {
             flag = false;
-            $res.val(input);
+            $result.val(input);
         } else
-            $res.val(value + input);
-    };
+            $result.val(value + input);
+    });
 
-    var calc = e => {
-        var v_raw = $res.val(),
+    this.functions.click(e => {
+        var v_raw = $result.val(),
             v_num = parseFloat(v_raw),
             input = e.target.innerText,
-            operation = $op.val(),
+            operation = $operation.val(),
             result = 0;
         switch (input) {
             case '←':
@@ -67,9 +67,7 @@ function calculator() {
                 break;
         }
         flag = true;
-        $op.val(operation);
-        $res.val(isNaN(result) ? 'Invalid input' : result);
-    };
-    $('.btn-num').click(input);
-    $('.btn-fnc').click(calc);
-}
+        $operation.val(operation);
+        $result.val(isNaN(result) ? 'Invalid input' : result);
+    });
+};

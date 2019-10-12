@@ -16,75 +16,79 @@
 
 /***** ICONS *****/
 .ie {
-  background-image: url("../img/ie.png");
+  background-image: url("../resources/ico/ie.png");
 }
 
 .bin {
-  background-image: url("../img/recycle-bin.ico");
+  background-image: url("../resources/ico/recycle-bin.ico");
 }
 
 .file {
-  background-image: url("../img/file.png");
+  background-image: url("../resources/ico/file.png");
 }
 
 .about {
-  background-image: url("../img/installer.png");
+  background-image: url("../resources/ico/installer.png");
 }
 
 .calc {
-  background-image: url("../img/calculator.png");
+  background-image: url("../resources/ico/calculator.png");
 }
 
 .paint {
-  background-image: url("../img/paint.png");
+  background-image: url("../resources/ico/paint.png");
 }
 
 .snipping {
-  background-image: url("../img/snipping-tool.png");
+  background-image: url("../resources/ico/snipping-tool.png");
 }
 
 .notepad {
-  background-image: url("../img/notepad.png");
+  background-image: url("../resources/ico/notepad.png");
 }
 
 .computer {
-  background-image: url("../img/my-computer.ico");
+  background-image: url("../resources/ico/my-computer.ico");
 }
 
 .folder {
-  background-image: url("../img/folder.ico");
+  background-image: url("../resources/ico/folder.ico");
 }
 
 .personal {
-  background-image: url("../img/personal.ico");
+  background-image: url("../resources/ico/personal.ico");
 }
 
 .desktop {
-  background-image: url("../img/desktop.ico");
+  background-image: url("../resources/ico/desktop.ico");
 }
 
 .disk-data {
-  background-image: url("../img/disk-data.ico");
+  background-image: url("../resources/ico/disk-data.ico");
 }
 
 .disk-usb {
-  background-image: url("../img/disk-usb.ico");
+  background-image: url("../resources/ico/disk-usb.ico");
 }
 
 .disk-os {
-  background-image: url("../img/disk-os.ico");
+  background-image: url("../resources/ico/disk-os.ico");
 }
 
 .disk-cd {
-  background-image: url("../img/disk-cd.ico");
+  background-image: url("../resources/ico/disk-cd.ico");
 }
 
 .cancel {
-  background-image: url("../img/cancel.ico");
+  background-image: url("../resources/ico/cancel.ico");
+}
+
+.save {
+  background-image: url("../resources/ico/save.ico");
 }
 
 .player {
-  background-image: url("../img/player.png");
+  background-image: url("../resources/ico/player.ico");
 }
 
 /***** LOG ON *****/
@@ -92,7 +96,7 @@
   width: 100vw;
   height: 100vh;
   text-align: center;
-  background: url(../img/bg/login.jpg);
+  background: url("../resources/bg/login.jpg");
   background-position: center;
   background-size: cover;
 }
@@ -333,7 +337,7 @@
   width: 30px;
   height: 30px;
   margin: 3px;
-  background: url(/img/start-button.png) no-repeat;
+  background: url("../resources/ico/start-button.png") no-repeat;
   background-size: contain;
   float: left;
 }
@@ -1178,6 +1182,12 @@
   background-position: 5px center;
 }
 
+#window-snipping .toolbar .toolbar-item.save {
+  display: none;
+  background-size: 50%;
+  background-position: center;
+}
+
 #window-snipping .toolbar .toolbar-item:hover {
   border-color: #555;
   -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -1645,7 +1655,7 @@
 /***** THEMES *****/
 /* AERO 1 - WINDOWS 7 */
 #aero-1 > .theme-bg {
-  background-image: url(../img/bg/default.jpg);
+  background-image: url("../resources/bg/default.jpg");
 }
 
 #aero-1 > .theme-color {
@@ -1653,7 +1663,7 @@
 }
 
 .aero-1 #windows {
-  background-image: url(../img/bg/default.jpg);
+  background-image: url("../resources/bg/default.jpg");
 }
 
 .aero-1 .window,
@@ -1681,7 +1691,7 @@
 
 /* AERO-2 - ARCHITECTURE */
 #aero-2 > .theme-bg {
-  background-image: url(../img/bg/architecture.jpg);
+  background-image: url("../resources/bg/architecture.jpg");
 }
 
 #aero-2 > .theme-color {
@@ -1689,7 +1699,7 @@
 }
 
 .aero-2 #windows {
-  background-image: url(../img/bg/architecture.jpg);
+  background-image: url("../resources/bg/architecture.jpg");
 }
 
 .aero-2 .window,
@@ -1717,7 +1727,7 @@
 
 /* AERO-3 - LANDSCAPES */
 #aero-3 > .theme-bg {
-  background-image: url(../img/bg/landscape.jpg);
+  background-image: url("../resources/bg/landscape.jpg");
 }
 
 #aero-3 > .theme-color {
@@ -1725,7 +1735,7 @@
 }
 
 .aero-3 #windows {
-  background-image: url(../img/bg/landscape.jpg);
+  background-image: url("../resources/bg/landscape.jpg");
 }
 
 .aero-3 .window,
@@ -1753,7 +1763,7 @@
 
 /* AERO-4 - NATURE */
 #aero-4 > .theme-bg {
-  background-image: url(../img/bg/nature.jpg);
+  background-image: url("../resources/bg/nature.jpg");
 }
 
 #aero-4 > .theme-color {
@@ -1761,7 +1771,7 @@
 }
 
 .aero-4 #windows {
-  background-image: url(../img/bg/nature.jpg);
+  background-image: url("../resources/bg/nature.jpg");
 }
 
 .aero-4 .window,
@@ -1789,7 +1799,7 @@
 
 /* BASIC-1 - WINDOWS 7 */
 #basic-1 > .theme-bg {
-  background-image: url(../img/bg/default.jpg);
+  background-image: url("../resources/bg/default.jpg");
 }
 
 #basic-1 > .theme-color {
@@ -1813,7 +1823,7 @@
 }
 
 .basic-1 #windows {
-  background-image: url(../img/bg/default.jpg);
+  background-image: url("../resources/bg/default.jpg");
 }
 
 .basic-1 .window,
@@ -1880,7 +1890,7 @@
 .basic-2 #taskbar,
 .basic-2 #start-menu,
 .basic-2 .taskbar-popup {
-  background-color: #d0d0d0;
+  background: #d0d0d0;
 }
 
 .basic-2 #start-button,
@@ -1909,7 +1919,7 @@
   margin: 5px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  background-image: url(../img/start-button-classic.png);
+  background-image: url("../resources/ico/start-button-classic.png");
   background-position: 3px;
 }
 
@@ -1927,7 +1937,7 @@
 
 .basic-2 #show-desktop {
   width: 20px;
-  background: center center url(../img/desktop.ico) no-repeat;
+  background: center center url("../resources/ico/desktop.ico") no-repeat;
   background-size: contain;
 }
 
@@ -1944,10 +1954,6 @@
   border-radius: 0;
   -webkit-box-shadow: none;
           box-shadow: none;
-}
-
-.basic-2 #start-menu {
-  background: none;
 }
 
 .basic-2 #start-menu hr {
@@ -2098,7 +2104,7 @@
   margin: 5px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  background-image: url(../img/start-button-classic.png);
+  background-image: url("../resources/ico/start-button-classic.png");
   background-position: 3px;
 }
 
@@ -2115,7 +2121,7 @@
 
 .basic-3 #show-desktop {
   width: 20px;
-  background: center center url(../img/desktop.ico) no-repeat;
+  background: center center url("../resources/ico/desktop.ico") no-repeat;
   background-size: contain;
 }
 
@@ -2278,7 +2284,7 @@
   margin: 5px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  background-image: url(../img/start-button-classic.png);
+  background-image: url("../resources/ico/start-button-classic.png");
   background-position: 3px;
 }
 
@@ -2295,7 +2301,7 @@
 
 .basic-4 #show-desktop {
   width: 20px;
-  background: center center url(../img/desktop.ico) no-repeat;
+  background: center center url("../resources/ico/desktop.ico") no-repeat;
   background-size: contain;
 }
 
@@ -2451,15 +2457,6 @@ label {
 h2 {
   text-align: center;
   margin: 0;
-}
-
-.badge {
-  float: right;
-  padding: 0 5px;
-  display: inline-block;
-  color: #fff;
-  background: #16c60c;
-  line-height: 1;
 }
 
 .button.back {

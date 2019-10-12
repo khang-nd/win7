@@ -1,19 +1,37 @@
-$map: ('aero-1': ('bg': $aero-1,
-        'colors': $aero-1-color rgba(170, 209, 251, 0.3)),
-    'aero-2': ('bg': $aero-2,
-        'colors': $aero-2-color rgba(85, 132, 200, 0.3)),
-    'aero-3': ('bg': $aero-3,
-        'colors': $aero-3-color rgba(171, 171, 171, 0.3)),
-    'aero-4': ('bg': $aero-4,
-        'colors': $aero-4-color rgba(179, 155, 207, 0.3)),
-    'basic-1': ('bg': $aero-1,
-        'colors': #a7bfd7 #a7bfd7 #fff),
-    'basic-2': ('bg': #3b6ea4,
-        'colors': #d0d0d0 #0f75c9 #fff),
-    'basic-3': ('bg': #000,
-        'colors': #fff #81007f #000),
-    'basic-4': ('bg': #fff,
-        'colors': #fff #000 #fff));
+$map: (
+    'aero-1': (
+        'bg': url($bgPath + 'default.jpg'),
+        'colors': rgba(170, 209, 251, 0.6) rgba(170, 209, 251, 0.3)
+    ),
+    'aero-2': (
+        'bg': url($bgPath + 'architecture.jpg'),
+        'colors': rgba(85, 132, 200, 0.6) rgba(85, 132, 200, 0.3)
+    ),
+    'aero-3': (
+        'bg': url($bgPath + 'landscape.jpg'),
+        'colors': rgba(171, 171, 171, 0.6) rgba(171, 171, 171, 0.3)
+    ),
+    'aero-4': (
+        'bg': url($bgPath + 'nature.jpg'),
+        'colors': rgba(179, 155, 207, 0.6) rgba(179, 155, 207, 0.3)
+    ),
+    'basic-1': (
+        'bg': url($bgPath + 'default.jpg'),
+        'colors': #a7bfd7 #a7bfd7 #fff
+    ),
+    'basic-2': (
+        'bg': #3b6ea4,
+        'colors': #d0d0d0 #0f75c9 #fff
+    ),
+    'basic-3': (
+        'bg': #000,
+        'colors': #fff #81007f #000
+    ),
+    'basic-4': (
+        'bg': #fff,
+        'colors': #fff #000 #fff
+    )
+);
 
 @mixin theme($theme) {
     $isAero: str-index($theme, 'basic')==null;
@@ -132,13 +150,17 @@ $map: ('aero-1': ('bg': $aero-1,
 
         @else {
 
-            @if($theme=='basic-1'or $theme=='basic-2') {
+            @if($theme=='basic-1' or $theme=='basic-2') {
 
                 .window,
                 #taskbar,
                 #start-menu,
                 .taskbar-popup {
-                    background-color: nth($colors, 1);
+                    @if($theme=='basic-2') {
+                        background: nth($colors, 1);
+                    } @else {
+                        background-color: nth($colors, 1);
+                    }
                 }
 
             }
@@ -206,7 +228,7 @@ $map: ('aero-1': ('bg': $aero-1,
                     line-height: 22px;
                     margin: 5px;
                     box-sizing: border-box;
-                    background-image: url(../img/start-button-classic.png);
+                    background-image: url($iconPath + 'start-button-classic.png');
                     background-position: 3px;
 
                     &:hover,
@@ -227,7 +249,7 @@ $map: ('aero-1': ('bg': $aero-1,
 
                 #show-desktop {
                     width: 20px;
-                    background: center center url(../img/desktop.ico) no-repeat;
+                    background: center center url($iconPath + 'desktop.ico') no-repeat;
                     background-size: contain;
                 }            
             }
@@ -266,7 +288,6 @@ $map: ('aero-1': ('bg': $aero-1,
     }
 
     #start-menu {
-        background: none;
 
         hr {
             border-color: #eee
