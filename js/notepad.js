@@ -1,55 +1,61 @@
-var Notepad = function () {
-    var EDITOR = this.editor,
-        NEW = this.new,
-        ALL = this.all,
-        CUT = this.cut,
-        UNDO = this.undo,
-        COPY = this.copy,
-        WRAP = this.wrap,
-        FONT = this.font,
-        DELETE = this.delete,
-        DATETIME = this.datetime,
-        start, end; // cursor position
+/* eslint-disable no-undef */
+const Calendar = require('./calendar');
 
-    // file
-    NEW.click(() => EDITOR.val(''));
+module.exports = (elements) => {
+  const EDITOR = elements.editor;
+  const NEW = elements.new;
+  const ALL = elements.all;
+  const CUT = elements.cut;
+  const UNDO = elements.undo;
+  const COPY = elements.copy;
+  const WRAP = elements.wrap;
+  const FONT = elements.font;
+  const DELETE = elements.delete;
+  const DATETIME = elements.datetime;
+  let start; let
+    end; // cursor position
 
-    // edit
-    var copy = () => document.execCommand('copy');
-    var del = () => document.execCommand('delete');
-    var cut = () => document.execCommand('cut');
-    
-    UNDO.click(() => document.execCommand('undo'));
-    ALL.click(() => EDITOR.select());
-    DATETIME.click(() => {
-        var {h,m,D,M,Y} = new Calendar().getDateTime();
-        document.execCommand('insertText', false, `${h}:${m} ${D}/${M}/${Y}`);
-    });
-    EDITOR.blur(e => {
-        start = e.target.selectionStart;
-        end = e.target.selectionEnd;
-        if (end === start) {
-            CUT.addClass('text-muted').off('click');
-            COPY.addClass('text-muted').off('click');
-            DELETE.addClass('text-muted').off('click');
-        } else {
-            CUT.removeClass('text-muted').on('click', cut);
-            COPY.removeClass('text-muted').on('click', copy);
-            DELETE.removeClass('text-muted').on('click', del);
-        }
-    });
+  // file
+  NEW.click(() => EDITOR.val(''));
 
-    // format
-    WRAP.click(e => {
-        EDITOR.toggleClass('wrap');
-        $(e.target).toggleClass('active');
+  // edit
+  const copy = () => document.execCommand('copy');
+  const del = () => document.execCommand('delete');
+  const cut = () => document.execCommand('cut');
+
+  UNDO.click(() => document.execCommand('undo'));
+  ALL.click(() => EDITOR.select());
+  DATETIME.click(() => {
+    const {
+      h, m, D, M, Y,
+    } = new Calendar().getDateTime();
+    document.execCommand('insertText', false, `${h}:${m} ${D}/${M}/${Y}`);
+  });
+  EDITOR.blur((e) => {
+    start = e.target.selectionStart;
+    end = e.target.selectionEnd;
+    if (end === start) {
+      CUT.addClass('text-muted').off('click');
+      COPY.addClass('text-muted').off('click');
+      DELETE.addClass('text-muted').off('click');
+    } else {
+      CUT.removeClass('text-muted').on('click', cut);
+      COPY.removeClass('text-muted').on('click', copy);
+      DELETE.removeClass('text-muted').on('click', del);
+    }
+  });
+
+  // format
+  WRAP.click((e) => {
+    EDITOR.toggleClass('wrap');
+    $(e.target).toggleClass('active');
+  });
+  FONT.click(() => {
+    EDITOR.css({
+      'font-family': $('input[name="font-family"]:checked').val(),
+      'font-style': $('input[name="font-style"]:checked').val().split(',')[0],
+      'font-weight': $('input[name="font-style"]:checked').val().split(',')[1],
+      'font-size': `${$('input[name="font-size"]:checked').val()}pt`,
     });
-    FONT.click(e => {
-        EDITOR.css({
-            'font-family': $('input[name="font-family"]:checked').val(),
-            'font-style': $('input[name="font-style"]:checked').val().split(',')[0],
-            'font-weight': $('input[name="font-style"]:checked').val().split(',')[1],
-            'font-size': $('input[name="font-size"]:checked').val() + 'pt'
-        });
-    });
+  });
 };

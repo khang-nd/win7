@@ -10,6 +10,7 @@
     border-radius: 5px;
     box-shadow: inset 0 0 0 1px #fff, 0 0 5px #000;
     box-sizing: border-box;
+    will-change: top, left;
 
     &:before {
         @extend %mask;

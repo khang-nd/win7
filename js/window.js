@@ -1,4 +1,5 @@
-let index = 0;
+/* eslint-disable func-names */
+/* eslint-disable no-undef */
 const TEMPLATE = (title, index) => `
     <div class="window" id="window-folder-${index}">
         <div class="titlebar">
@@ -25,23 +26,23 @@ const TEMPLATE = (title, index) => `
         </div>
     </div>`;
 
-let Window = function() {
-    let $desktop = this.desktop;
-    this.create = e => {
-        let $target = $(e.target);
-        let title = e.target.value;
-        let window = TEMPLATE(title, index);
-        $target
-            .parents('.folder')
-            .attr('data-target', '#window-folder-' + index);
-        $target.parent().text(title);
-        $target.remove();
-        $(window)
-            .appendTo($desktop)
-            .draggable({
-                containment: 'parent',
-                handle: '.title'
-            })
-        index++;
-    }
-}
+let index = 0;
+module.exports = function ($desktop) {
+  this.create = (e) => {
+    const $target = $(e.target);
+    const title = e.target.value;
+    const window = TEMPLATE(title, index);
+    $target
+      .parents('.folder')
+      .attr('data-target', `#window-folder-${index}`);
+    $target.parent().text(title);
+    $target.remove();
+    $(window)
+      .appendTo($desktop)
+      .draggable({
+        containment: 'parent',
+        handle: '.title',
+      });
+    index += 1;
+  };
+};
