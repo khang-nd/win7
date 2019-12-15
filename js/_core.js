@@ -2,6 +2,8 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable func-names */
 
+require('./sorting');
+
 const SnippingTool = require('./snipping');
 const Calculator = require('./calculator');
 const Browser = require('./browser');
@@ -9,14 +11,17 @@ const Notepad = require('./notepad');
 const Calendar = require('./calendar');
 const Window = require('./window');
 const Windows = require('./windows');
+const Player = require('./mediaplayer');
 
 $(() => {
   const path = '../resources/';
   const isEnter = (e) => e.key === 'Enter' || e.which === 13;
+  const { random } = Math;
 
+  const $BOOT = $('#boot');
+  const $LOGON = $('#logon');
   const $WINDOW = $('#windows');
   const $WINDOWS = $('.window');
-  const $LOGON = $('#logon');
   const $TOPMENU = $('#desktop-menu');
   const $SUBMENU = $('#sub-menu');
   const $DESKTOP = $('#desktop');
@@ -27,19 +32,22 @@ $(() => {
     return this.css('display', 'flex');
   };
 
-  $LOGON.hide();
-  $WINDOW.show();
+  // BOOT
+  setTimeout(() => {
+    $BOOT.hide();
+    $LOGON.show();
+  }, random() * 11000 + 7000) // random from 7 - 18 seconds
 
   // LOGON
   $('#password').keyup((e) => {
     if (isEnter(e)) $('#start').click();
   });
   $('#start').click(() => {
-    if ($('#password').val() !== 'khangnd') {
-      return;
-    }
-    $('#startup')[0].play();
     $('#password').val('');
+    $('#user').click();
+  });
+  $('#user').click(() => {
+    $('#startup')[0].play();
     $LOGON.hide();
     $WINDOW.show();
   });
@@ -55,7 +63,7 @@ $(() => {
       $('#battery-3d > .gauge')
         .height(`${percent}%`)
         .css('top', `${100 - percent}%`);
-      $('#battery-text').text(`${percent}% remaining`);
+      $('#battery-text').text(`${percent.toFixed(0)}% remaining`);
     });
   };
 
@@ -183,6 +191,24 @@ $(() => {
     font: $('#notepad-font'),
     delete: $('#notepad-del'),
     datetime: $('#notepad-datetime'),
+  });
+
+  Player({
+    audioBrowser: $('#player-open__audio'),
+    videoBrowser: $('#player-open__video'),
+    photoBrowser: $('#player-open__photo'),
+    playlist: $('#player-list'),
+    volume: $('#volume > input'),
+    progress: $('#player-progress'),
+    audio: $('#player-audio'),
+    video: $('#player-video'),
+    random: $('#random'),
+    loop: $('#loop'),
+    play: $('#play'),
+    prev: $('#play-prev'),
+    next: $('#play-next'),
+    stop: $('#stop'),
+    mute: $('#mute'),
   });
 
   // START MENU
@@ -322,29 +348,29 @@ $(() => {
   // ============= PERSONALIZE ====================
   $('.theme').click(function () {
     const $body = $('#windows-container');
+    const $wait = $('#window-wait');
     if ($body.hasClass(this.id)) return;
 
-    const $wait = $('#window-wait');
-    $wait.show();
-    $body.addClass('grayout');
-    setTimeout(() => {
+    function changeTheme() {
       $body.attr('class', this.id);
       $('#theme-name').text(this.innerText);
       $('.theme').removeClass('selected');
       $(this).addClass('selected');
-
       $('#startup')[0].src = /basic-2|basic-3|basic-4/.test(this.id)
         ? `${path}sound/Windows7-startup-sound-classic.ogg`
         : `${path}sound/Windows7-startup-sound.ogg`;
       $wait.hide();
-    }, Math.random() * 2000);
+    }
+    $wait.show();
+    $body.addClass('grayout');
+    setTimeout(changeTheme, random() * 2000);
   });
 
   // ============= MY COMPUTER ===============
 
   // disk space
   function Disk(selector, values) {
-    const max = values.max - (Math.random() * values.max) / 50; // simulate system restore points
+    const max = values.max - (random() * values.max) / 50; // simulate system restore points
     const { cur } = values;
     $(`${selector} > .storage-bar`).progressbar({
       value: cur,

@@ -3,6 +3,8 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable func-names */
 
+require('./sorting');
+
 const SnippingTool = require('./snipping');
 const Calculator = require('./calculator');
 const Browser = require('./browser');
@@ -10,14 +12,17 @@ const Notepad = require('./notepad');
 const Calendar = require('./calendar');
 const Window = require('./window');
 const Windows = require('./windows');
+const Player = require('./mediaplayer');
 
 $(() => {
   const path = '../resources/';
   const isEnter = (e) => e.key === 'Enter' || e.which === 13;
+  const { random } = Math;
 
+  const $BOOT = $('#boot');
+  const $LOGON = $('#logon');
   const $WINDOW = $('#windows');
   const $WINDOWS = $('.window');
-  const $LOGON = $('#logon');
   const $TOPMENU = $('#desktop-menu');
   const $SUBMENU = $('#sub-menu');
   const $DESKTOP = $('#desktop');
@@ -28,19 +33,22 @@ $(() => {
     return this.css('display', 'flex');
   };
 
-  $LOGON.hide();
-  $WINDOW.show();
+  // BOOT
+  setTimeout(() => {
+    $BOOT.hide();
+    $LOGON.show();
+  }, random() * 11000 + 7000) // random from 7 - 18 seconds
 
   // LOGON
   $('#password').keyup((e) => {
     if (isEnter(e)) $('#start').click();
   });
   $('#start').click(() => {
-    if ($('#password').val() !== 'khangnd') {
-      return;
-    }
-    $('#startup')[0].play();
     $('#password').val('');
+    $('#user').click();
+  });
+  $('#user').click(() => {
+    $('#startup')[0].play();
     $LOGON.hide();
     $WINDOW.show();
   });
@@ -56,7 +64,7 @@ $(() => {
       $('#battery-3d > .gauge')
         .height(`${percent}%`)
         .css('top', `${100 - percent}%`);
-      $('#battery-text').text(`${percent}% remaining`);
+      $('#battery-text').text(`${percent.toFixed(0)}% remaining`);
     });
   };
 
@@ -184,6 +192,24 @@ $(() => {
     font: $('#notepad-font'),
     delete: $('#notepad-del'),
     datetime: $('#notepad-datetime'),
+  });
+
+  Player({
+    audioBrowser: $('#player-open__audio'),
+    videoBrowser: $('#player-open__video'),
+    photoBrowser: $('#player-open__photo'),
+    playlist: $('#player-list'),
+    volume: $('#volume > input'),
+    progress: $('#player-progress'),
+    audio: $('#player-audio'),
+    video: $('#player-video'),
+    random: $('#random'),
+    loop: $('#loop'),
+    play: $('#play'),
+    prev: $('#play-prev'),
+    next: $('#play-next'),
+    stop: $('#stop'),
+    mute: $('#mute'),
   });
 
   // START MENU
@@ -323,29 +349,29 @@ $(() => {
   // ============= PERSONALIZE ====================
   $('.theme').click(function () {
     const $body = $('#windows-container');
+    const $wait = $('#window-wait');
     if ($body.hasClass(this.id)) return;
 
-    const $wait = $('#window-wait');
-    $wait.show();
-    $body.addClass('grayout');
-    setTimeout(() => {
+    function changeTheme() {
       $body.attr('class', this.id);
       $('#theme-name').text(this.innerText);
       $('.theme').removeClass('selected');
       $(this).addClass('selected');
-
       $('#startup')[0].src = /basic-2|basic-3|basic-4/.test(this.id)
         ? `${path}sound/Windows7-startup-sound-classic.ogg`
         : `${path}sound/Windows7-startup-sound.ogg`;
       $wait.hide();
-    }, Math.random() * 2000);
+    }
+    $wait.show();
+    $body.addClass('grayout');
+    setTimeout(changeTheme, random() * 2000);
   });
 
   // ============= MY COMPUTER ===============
 
   // disk space
   function Disk(selector, values) {
-    const max = values.max - (Math.random() * values.max) / 50; // simulate system restore points
+    const max = values.max - (random() * values.max) / 50; // simulate system restore points
     const { cur } = values;
     $(`${selector} > .storage-bar`).progressbar({
       value: cur,
@@ -378,7 +404,7 @@ $(() => {
   });
 });
 
-},{"./browser":2,"./calculator":3,"./calendar":4,"./notepad":5,"./snipping":6,"./window":7,"./windows":8}],2:[function(require,module,exports){
+},{"./browser":2,"./calculator":3,"./calendar":4,"./mediaplayer":5,"./notepad":6,"./snipping":7,"./sorting":8,"./window":9,"./windows":10}],2:[function(require,module,exports){
 // cannot print iframe url to addr bar due to cross-domain policy
 module.exports = (elements) => {
   const PROXY = 'https://jsonp.afeld.me/?url=';
@@ -556,6 +582,256 @@ module.exports = function () {
 };
 
 },{}],5:[function(require,module,exports){
+/* eslint-disable func-names */
+/* eslint-disable no-undef */
+module.exports = (elements) => {
+  // elements
+  const $audioBrowser = elements.audioBrowser;
+  const $videoBrowser = elements.videoBrowser;
+  const $photoBrowser = elements.photoBrowser;
+  const $playlist = elements.playlist;
+  const $volume = elements.volume;
+  const $progress = elements.progress;
+  const $audio = elements.audio[0];
+  const $video = elements.video[0];
+  const $random = elements.random;
+  const $loop = elements.loop;
+  const $play = elements.play;
+  const $prev = elements.prev;
+  const $next = elements.next;
+  const $stop = elements.stop;
+  const $mute = elements.mute;
+  const $muteic = $mute.find('>i');
+  const $playic = $play.find('>i');
+  const dateOptions = {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  };
+
+  // states
+  const STOP = 0;
+  const PLAY = 1;
+  const PAUSE = 2;
+  const MUTE = 3;
+  const SEEK = 4;
+
+  const icon = {
+    play: 'fa fa-play ml-5',
+    pause: 'fa fa-pause',
+    mute: 'fa fa-volume-off',
+    low: 'fa fa-volume-down',
+    high: 'fa fa-volume-up',
+  };
+
+  let current; // current file name
+  let sources = [];
+  let isLoop = false;
+  let isRandom = false;
+  const { round, random } = Math;
+
+  const changeState = (state) => {
+    switch (state) {
+      case STOP:
+        $audio.pause();
+        $audio.currentTime = 0;
+        $playic.attr('class', icon.play);
+        $stop.addClass('disabled');
+        break;
+      case PLAY:
+        if (!sources.length) return;
+        if (!$audio.src) $audio.src = sources[0].src;
+        $audio.play();
+        $playic.attr('class', icon.pause);
+        $stop.removeClass('disabled');
+        break;
+      case PAUSE:
+        $audio.pause();
+        $playic.attr('class', icon.play);
+        $stop.removeClass('disabled');
+        break;
+      case MUTE:
+        $audio.muted = true;
+        $muteic.attr('class', icon.mute);
+        break;
+      case SEEK:
+        $progress.val($audio.currentTime);
+        $progress.css('background', `linear-gradient(to right, #0365c8 ${($audio.currentTime / $audio.duration) * 100 - 1}%, transparent ${($audio.currentTime / $audio.duration) * 100}%)`);
+        break;
+      default: // change volume
+        $audio.muted = false;
+        $volume.css('background', `linear-gradient(to right, #0365c8 ${$audio.volume * 100}%, transparent ${$audio.volume * 100}%)`);
+        if ($audio.volume > 0.5) $muteic.attr('class', icon.high);
+        else if ($audio.volume === 0) $muteic.attr('class', icon.mute);
+        else $muteic.attr('class', icon.low);
+    }
+  };
+
+  const navigate = function (direction) {
+    if (!sources.length || sources.length === 1) return;
+
+    let index = 0;
+    let playable = false;
+    const dir = this.id || direction;
+    if (current) {
+      const max = sources.length - 1;
+      index = sources.indexOf(sources.find((src) => current === src.name));
+      if (isRandom) {
+        playable = true;
+        index = (function randomize(i) {
+          const number = round(random() * max);
+          return number === i ? randomize(i) : number;
+        }(index));
+      } else if (dir === 'play-next') {
+        playable = index < max || isLoop;
+        index = index === max ? 0 : index + 1;
+      } else {
+        index = index === 0 ? max : index - 1;
+      }
+    }
+    current = sources[index].name;
+    $audio.src = sources[index].src;
+    changeState(playable ? PLAY : STOP);
+  };
+
+  File.prototype.isAccepted = function (formats) {
+    const split = this.name.split('.');
+    const ext = split[split.length - 1];
+    return formats.indexOf(ext) > -1;
+  };
+
+  const formatTime = function (time) {
+    let minute = time / 60;
+    let second = round(time % 60);
+    minute = minute.toFixed(0);
+    second = second <= 9 ? `0${second}` : second;
+    return `${minute}:${second}`;
+  };
+
+  const handleFiles = function () {
+    const { files, accept } = this;
+
+    if (!files.length) return;
+
+    const formats = accept.split(',').map((ext) => ext.substring(1));
+    const validFiles = Array.from(files).filter((file) => file.isAccepted(formats));
+
+    if (!validFiles) return;
+
+    const table = $('<table>').appendTo($playlist.empty());
+
+    if (this.id === 'player-open__photo') {
+      console.log('photo');
+    } else {
+      // clean up
+      sources = [];
+      current = null;
+      $audio.removeAttribute('src');
+      changeState(STOP);
+
+      $prev.attr('class', `player-control ${validFiles.length > 1 ? '' : 'disabled'}`);
+      $next.attr('class', `player-control ${validFiles.length > 1 ? '' : 'disabled'}`);
+
+      // append header row
+      $('<tr>', {
+        appendTo: table,
+        append: [
+          $('<th>', { text: 'Title' }),
+          $('<th>', { text: 'Length' }),
+          $('<th>', { text: 'Size' }),
+          $('<th>', { text: 'Last Modified' }),
+          $('<th>', { text: 'Type' }),
+        ],
+      });
+
+      // append row for each file
+      $.each(validFiles, (index, file) => {
+        const reader = new FileReader();
+        const fileName = file.name.split('.');
+        const fileExt = fileName.pop();
+        reader.readAsDataURL(file);
+        reader.onloadend = (e) => {
+          const data = e.target.result;
+          const audio = new Audio(data);
+          audio.onloadedmetadata = () => {
+            sources.push({
+              name: fileName.join('.'),
+              src: data,
+            });
+            $('<tr>', {
+              appendTo: table,
+              append: [
+                $('<td>', { text: fileName.join('.') }),
+                $('<td>', { text: formatTime(audio.duration) }),
+                $('<td>', { text: `${(file.size / 1024 / 1024).toFixed(1)} MB` }),
+                $('<td>', { text: new Date(file.lastModified).toLocaleDateString('en-US', dateOptions) }),
+                $('<td>', { text: fileExt }),
+              ],
+              click() {
+                current = $(this).find('td:first-child').text();
+                $audio.src = sources.find((src) => current === src.name).src;
+                changeState(PLAY);
+              },
+            });
+
+            if (index === validFiles.length - 1) table.addSortWidget();
+          };
+        };
+      });
+    }
+  };
+
+  // EVENT HANDLERS
+  $audio.addEventListener('timeupdate', () => changeState(SEEK));
+  $audio.addEventListener('loadedmetadata', () => {
+    $progress.attr('max', $audio.duration);
+    $playlist.find('tr').removeClass('active');
+    if (current) {
+      $playlist
+        .find('td:first-child').filter((_, td) => $(td).text() === current)
+        .parent().addClass('active');
+    } else {
+      current = $playlist
+        .find('tr:nth-child(2)').addClass('active')
+        .find('td:first-child').text();
+    }
+  });
+  $audio.addEventListener('ended', () => {
+    if (sources.length > 1) navigate('play-next');
+    else if (isLoop) changeState(PLAY);
+    else changeState(STOP);
+  });
+
+  $stop.click(() => changeState(STOP));
+  $mute.click(() => changeState($audio.muted ? null : MUTE));
+  $play.click(() => changeState($audio.paused ? PLAY : PAUSE));
+  $prev.click(navigate);
+  $next.click(navigate);
+  $loop.click(() => {
+    $loop.toggleClass('active');
+    isLoop = !isLoop;
+  });
+  $random.click(() => {
+    $random.toggleClass('active');
+    isRandom = !isRandom;
+  });
+
+  $volume.on('input', (e) => {
+    $audio.volume = e.target.value / 100;
+    changeState();
+  });
+
+  $progress.on('input', (e) => {
+    $audio.currentTime = e.target.value;
+    changeState(SEEK);
+  });
+
+  $audioBrowser.on('change', handleFiles);
+  $videoBrowser.on('change', handleFiles);
+  $photoBrowser.on('change', handleFiles);
+};
+
+},{}],6:[function(require,module,exports){
 /* eslint-disable no-undef */
 const Calendar = require('./calendar');
 
@@ -618,7 +894,7 @@ module.exports = (elements) => {
   });
 };
 
-},{"./calendar":4}],6:[function(require,module,exports){
+},{"./calendar":4}],7:[function(require,module,exports){
 /* eslint-disable no-shadow */
 /* eslint-disable func-names */
 /* eslint-disable no-undef */
@@ -736,7 +1012,46 @@ module.exports = function (elements) {
   });
 };
 
-},{"html2canvas":9}],7:[function(require,module,exports){
+},{"html2canvas":11}],8:[function(require,module,exports){
+/**
+ * sorttable.js (modified)
+ * jQuery plug-in that allows sorting table by column
+ * https://www.jqueryscript.net/table/Simplest-jQuery-Sortable-Table-Plugin-sorttable-js.html
+ */
+/* eslint-disable func-names */
+module.export = (function ($) {
+  $.fn.addSortWidget = function () {
+    const table = $(this);
+    let isAscending = true;
+
+    $('th', table).on('click', function () {
+      const column = $(this);
+      isAscending = !isAscending;
+
+      $('th', table).attr('class', 'sortable');
+      column
+        .addClass('sorting')
+        .addClass(isAscending ? 'asc' : 'des');
+
+      // save rows to array for sorting
+      const rows = $('tr', table).not(':first-child').get();
+      rows
+        // sort rows
+        .sort((a, b) => {
+          const index = column.index();
+          const m = $(`td:eq(${index})`, a).text();
+          const n = $(`td:eq(${index})`, b).text();
+          return isAscending ? m.localeCompare(n) : n.localeCompare(m);
+        })
+        // append sorted rows
+        .forEach((row) => $(table).append(row));
+    });
+
+    return table;
+  };
+}(jQuery));
+
+},{}],9:[function(require,module,exports){
 /* eslint-disable func-names */
 /* eslint-disable no-undef */
 const TEMPLATE = (title, index) => `
@@ -786,7 +1101,7 @@ module.exports = function ($desktop) {
   };
 };
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /* eslint-disable no-undef */
 /* eslint-disable func-names */
 module.exports = function ($windows) {
@@ -861,7 +1176,7 @@ module.exports = function ($windows) {
   };
 };
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /*!
  * html2canvas 1.0.0-rc.5 <https://html2canvas.hertzen.com>
  * Copyright (c) 2019 Niklas von Hertzen <https://hertzen.com>
@@ -7897,4 +8212,4 @@ module.exports = function ($windows) {
 }));
 
 
-},{}]},{},[6,3,2,5,4,7,8,1]);
+},{}]},{},[1]);

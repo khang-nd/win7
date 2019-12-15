@@ -25,6 +25,7 @@
     "eslint-plugin-import": "^2.18.2"
   },
   "dependencies": {
-    "html2canvas": "^1.0.0-rc.5"
+    "html2canvas": "^1.0.0-rc.5",
+    "watchify": "^3.11.1"
   }
 }

@@ -1,105 +1,248 @@
-// function mediaplayer() {
+/* eslint-disable func-names */
+/* eslint-disable no-undef */
+module.exports = (elements) => {
+  // elements
+  const $audioBrowser = elements.audioBrowser;
+  const $videoBrowser = elements.videoBrowser;
+  const $photoBrowser = elements.photoBrowser;
+  const $playlist = elements.playlist;
+  const $volume = elements.volume;
+  const $progress = elements.progress;
+  const $audio = elements.audio[0];
+  const $video = elements.video[0];
+  const $random = elements.random;
+  const $loop = elements.loop;
+  const $play = elements.play;
+  const $prev = elements.prev;
+  const $next = elements.next;
+  const $stop = elements.stop;
+  const $mute = elements.mute;
+  const $muteic = $mute.find('>i');
+  const $playic = $play.find('>i');
+  const dateOptions = {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  };
 
-//     // components
-//     const $volume = $('#volume > input'),
-//         $progress = $('#player-progress'),
-//         $player = SC.Widget('player'),
-//         $random = $('#random'),
-//         $repeat = $('#repeat'),
-//         $play = $('#play'),
-//         $prev = $('#prev'),
-//         $next = $('#next'),
-//         $stop = $('#stop'),
-//         $mute = $('#mute'),
-//         $muteic = $('#mute > i'),
-//         $playic = $('#play > i');
+  // states
+  const STOP = 0;
+  const PLAY = 1;
+  const PAUSE = 2;
+  const MUTE = 3;
+  const SEEK = 4;
 
-//     // states
-//     const STOP = 0,
-//         PLAY = 1,
-//         PAUSE = 2,
-//         MUTE = 3,
-//         SEEK = 4;
+  const icon = {
+    play: 'fa fa-play ml-5',
+    pause: 'fa fa-pause',
+    mute: 'fa fa-volume-off',
+    low: 'fa fa-volume-down',
+    high: 'fa fa-volume-up',
+  };
 
-//     const icon = {
-//         play: 'fa fa-play ml-5',
-//         pause: 'fa fa-pause',
-//         mute: 'fa fa-volume-off',
-//         low: 'fa fa-volume-down',
-//         high: 'fa fa-volume-up'
-//     };
+  let current; // current file name
+  let sources = [];
+  let isLoop = false;
+  let isRandom = false;
+  const { round, random } = Math;
 
-//     let volume = 100,
-//         cur = 0,
-//         max = 0;
+  const changeState = (state) => {
+    switch (state) {
+      case STOP:
+        $audio.pause();
+        $audio.currentTime = 0;
+        $playic.attr('class', icon.play);
+        $stop.addClass('disabled');
+        break;
+      case PLAY:
+        if (!sources.length) return;
+        if (!$audio.src) $audio.src = sources[0].src;
+        $audio.play();
+        $playic.attr('class', icon.pause);
+        $stop.removeClass('disabled');
+        break;
+      case PAUSE:
+        $audio.pause();
+        $playic.attr('class', icon.play);
+        $stop.removeClass('disabled');
+        break;
+      case MUTE:
+        $audio.muted = true;
+        $muteic.attr('class', icon.mute);
+        break;
+      case SEEK:
+        $progress.val($audio.currentTime);
+        $progress.css('background', `linear-gradient(to right, #0365c8 ${($audio.currentTime / $audio.duration) * 100 - 1}%, transparent ${($audio.currentTime / $audio.duration) * 100}%)`);
+        break;
+      default: // change volume
+        $audio.muted = false;
+        $volume.css('background', `linear-gradient(to right, #0365c8 ${$audio.volume * 100}%, transparent ${$audio.volume * 100}%)`);
+        if ($audio.volume > 0.5) $muteic.attr('class', icon.high);
+        else if ($audio.volume === 0) $muteic.attr('class', icon.mute);
+        else $muteic.attr('class', icon.low);
+    }
+  };
 
-//     let tracks = [177671751];
+  const navigate = function (direction) {
+    if (!sources.length || sources.length === 1) return;
 
-//     const changeState = state => {
-//         switch (state) {
-//             case STOP:
-//                 cur = 0;
-//                 $player.pause().seekTo(cur);
-//                 $playic.attr('class', icon.play);
-//                 $stop.addClass('disabled');
-//                 break;
-//             case PLAY:
-//                 $player.play();
-//                 $playic.attr('class', icon.pause);
-//                 $stop.removeClass('disabled');
-//                 break;
-//             case PAUSE:
-//                 $player.pause();
-//                 $playic.attr('class', icon.play);
-//                 $stop.removeClass('disabled');
-//                 break;
-//             case MUTE:
-//                 $player.setVolume(0);
-//                 $muteic.attr('class', icon.mute);
-//                 break;
-//             case SEEK:
-//                 $progress.attr('value', cur);
-//                 $progress.css('background', `linear-gradient(to right, #0365c8 ${cur / max * 100}%, transparent ${cur / max * 100}%)`);
-//                 break;
-//             default:
-//                 $player.setVolume(volume);
-//                 $volume.css('background', `linear-gradient(to right, #0365c8 ${volume}%, transparent ${volume}%)`);
-//                 if (volume > 50)
-//                     $muteic.attr('class', icon.high);
-//                 else if (volume > 0 && volume <= 50)
-//                     $muteic.attr('class', icon.low);
-//                 else
-//                     $muteic.attr('class', icon.mute);
-//         }
-//     };
+    let index = 0;
+    let playable = false;
+    const dir = this.id || direction;
+    if (current) {
+      const max = sources.length - 1;
+      index = sources.indexOf(sources.find((src) => current === src.name));
+      if (isRandom) {
+        playable = true;
+        index = (function randomize(i) {
+          const number = round(random() * max);
+          return number === i ? randomize(i) : number;
+        }(index));
+      } else if (dir === 'play-next') {
+        playable = index < max || isLoop;
+        index = index === max ? 0 : index + 1;
+      } else {
+        index = index === 0 ? max : index - 1;
+      }
+    }
+    current = sources[index].name;
+    $audio.src = sources[index].src;
+    changeState(playable ? PLAY : STOP);
+  };
 
-//     // player's event handlers
-//     $player
-//         .bind(SC.Widget.Events.PLAY, () => {
-//             $player.getDuration(d => max = d);
-//             $progress.attr('max', max);
-//         })
-//         .bind(SC.Widget.Events.PLAY_PROGRESS, e => {
-//             cur = e.currentPosition;
-//             changeState(SEEK);
-//         });
+  File.prototype.isAccepted = function (formats) {
+    const split = this.name.split('.');
+    const ext = split[split.length - 1];
+    return formats.indexOf(ext) > -1;
+  };
 
-//     // controls' event handlers
-//     $volume.on('input', e => $(e.target).change());
-//     $volume.change(e => {
-//         volume = e.target.value;
-//         changeState();
-//     });
+  const formatTime = function (time) {
+    let minute = time / 60;
+    let second = round(time % 60);
+    minute = minute.toFixed(0);
+    second = second <= 9 ? `0${second}` : second;
+    return `${minute}:${second}`;
+  };
 
-//     $progress.on('input', e => $(e.target).change());
-//     $progress.change(e => {
-//         cur = e.target.value;
-//         $player.seekTo(cur);
-//         changeState(SEEK);
-//     });
+  const handleFiles = function () {
+    const { files, accept } = this;
 
-//     $stop.click(() => changeState(STOP));
-//     $mute.click(() => changeState($muteic.hasClass(icon.mute) ? null : MUTE));
-//     $play.click(() => changeState($playic.hasClass(icon.play) ? PLAY : PAUSE));
+    if (!files.length) return;
 
-// }
+    const formats = accept.split(',').map((ext) => ext.substring(1));
+    const validFiles = Array.from(files).filter((file) => file.isAccepted(formats));
+
+    if (!validFiles) return;
+
+    const table = $('<table>').appendTo($playlist.empty());
+
+    if (this.id === 'player-open__photo') {
+      console.log('photo');
+    } else {
+      // clean up
+      sources = [];
+      current = null;
+      $audio.removeAttribute('src');
+      changeState(STOP);
+
+      $prev.attr('class', `player-control ${validFiles.length > 1 ? '' : 'disabled'}`);
+      $next.attr('class', `player-control ${validFiles.length > 1 ? '' : 'disabled'}`);
+
+      // append header row
+      $('<tr>', {
+        appendTo: table,
+        append: [
+          $('<th>', { text: 'Title' }),
+          $('<th>', { text: 'Length' }),
+          $('<th>', { text: 'Size' }),
+          $('<th>', { text: 'Last Modified' }),
+          $('<th>', { text: 'Type' }),
+        ],
+      });
+
+      // append row for each file
+      $.each(validFiles, (index, file) => {
+        const reader = new FileReader();
+        const fileName = file.name.split('.');
+        const fileExt = fileName.pop();
+        reader.readAsDataURL(file);
+        reader.onloadend = (e) => {
+          const data = e.target.result;
+          const audio = new Audio(data);
+          audio.onloadedmetadata = () => {
+            sources.push({
+              name: fileName.join('.'),
+              src: data,
+            });
+            $('<tr>', {
+              appendTo: table,
+              append: [
+                $('<td>', { text: fileName.join('.') }),
+                $('<td>', { text: formatTime(audio.duration) }),
+                $('<td>', { text: `${(file.size / 1024 / 1024).toFixed(1)} MB` }),
+                $('<td>', { text: new Date(file.lastModified).toLocaleDateString('en-US', dateOptions) }),
+                $('<td>', { text: fileExt }),
+              ],
+              click() {
+                current = $(this).find('td:first-child').text();
+                $audio.src = sources.find((src) => current === src.name).src;
+                changeState(PLAY);
+              },
+            });
+
+            if (index === validFiles.length - 1) table.addSortWidget();
+          };
+        };
+      });
+    }
+  };
+
+  // EVENT HANDLERS
+  $audio.addEventListener('timeupdate', () => changeState(SEEK));
+  $audio.addEventListener('loadedmetadata', () => {
+    $progress.attr('max', $audio.duration);
+    $playlist.find('tr').removeClass('active');
+    if (current) {
+      $playlist
+        .find('td:first-child').filter((_, td) => $(td).text() === current)
+        .parent().addClass('active');
+    } else {
+      current = $playlist
+        .find('tr:nth-child(2)').addClass('active')
+        .find('td:first-child').text();
+    }
+  });
+  $audio.addEventListener('ended', () => {
+    if (sources.length > 1) navigate('play-next');
+    else if (isLoop) changeState(PLAY);
+    else changeState(STOP);
+  });
+
+  $stop.click(() => changeState(STOP));
+  $mute.click(() => changeState($audio.muted ? null : MUTE));
+  $play.click(() => changeState($audio.paused ? PLAY : PAUSE));
+  $prev.click(navigate);
+  $next.click(navigate);
+  $loop.click(() => {
+    $loop.toggleClass('active');
+    isLoop = !isLoop;
+  });
+  $random.click(() => {
+    $random.toggleClass('active');
+    isRandom = !isRandom;
+  });
+
+  $volume.on('input', (e) => {
+    $audio.volume = e.target.value / 100;
+    changeState();
+  });
+
+  $progress.on('input', (e) => {
+    $audio.currentTime = e.target.value;
+    changeState(SEEK);
+  });
+
+  $audioBrowser.on('change', handleFiles);
+  $videoBrowser.on('change', handleFiles);
+  $photoBrowser.on('change', handleFiles);
+};

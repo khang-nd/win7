@@ -13,14 +13,18 @@
 </head>
 
 <body id="windows-container" class="aero-1">
+    <div id="boot">
+        <video id="boot-video" src="resources/boot.mp4" muted></video>
+        <script>document.querySelector('#boot-video').play()</script>
+    </div>
     <div id="logon">
-        <div id="logon-wrapper">
+        <div id="logon-wrapper" class="no-password">
             <div id="user"><img src="resources/acc/user.bmp" width="100"></div>
             <div id="name">Administrator</div>
-            <div id="input">
+            <!-- <div id="input">
                 <input type="text" id="password" placeholder="khangnd" autofocus>
                 <div class="button round" id="start">&#x279C;</div>
-            </div>
+            </div> -->
         </div>
     </div>
     <div id="windows">
@@ -62,19 +66,6 @@
                         <small class="text-normal">Simulation</small>
                     </h2>
                     <p class="text-center text-75">version 1.14.0</p>
-                    <p>Components:</p>
-                    <ul>
-                        <li>HTML</li>
-                        <li>CSS</li>
-                        <li>JS</li>
-                    </ul>
-                    <p>Libraries</p>
-                    <ul>
-                        <li>jQuery</li>
-                        <li>jQueryUI</li>
-                        <li>jQueryUI Touch Punch</li>
-                        <li>html2canvas</li>
-                    </ul>
                     <p>Functional features:</p>
                     <ul>
                         <li>Windows GUI</li>
@@ -90,7 +81,7 @@
                         <li>Snipping Tool (Rectangular, Full-screen)</li>
                         <li>Battery (Adjust brightness)</li>
                         <li>Calendar</li>
-                        <li>Media Player</li>
+                        <li>Media Player (Music)</li>
                     </ul>
                 </div>
             </div>
@@ -515,7 +506,7 @@
                 </div>
                 <div class="container direction" id="snip-result">Select snip mode to start snipping.</div>
             </div>
-            <div class="window small" id="window-player" style="display:flex">
+            <div class="window small" id="window-player">
                 <div class="titlebar">
                     <div class="title player">Windows Media Player</div>
                     <div class="controls">
@@ -540,11 +531,20 @@
                         <ul class="toolbar-item-lv2">
                             <li class="has-sub">
                                 Manage libraries
-                                <ul class="toolbar-item-lv3">
-                                    <li>Music</li>
-                                    <li>Videos</li>
-                                    <li>Pictures</li>
-                                </ul>
+                                <div class="toolbar-item-lv3">
+                                    <label for="player-open__audio">Music
+                                        <input id="player-open__audio" type="file" multiple hidden
+                                            accept=".mp3,.ogg,.wav">
+                                    </label>
+                                    <label for="player-open__video" class="text-muted">Videos
+                                        <!-- <input id="player-open__video" type="file" multiple hidden
+                                            accept=".mp4,.webm,.ogg"> -->
+                                    </label>
+                                    <label for="player-open__photo" class="text-muted">Pictures
+                                        <!-- <input id="player-open__photo" type="file" multiple hidden
+                                            accept=".jpg,.jpeg,.png,.gif,.bmp,.ico"> -->
+                                    </label>
+                                </div>
                             </li>
                             <li class="text-muted">Options</li>
                         </ul>
@@ -558,29 +558,29 @@
                             Click Organize, then click Manage libraries to include items.
                         </noitem>
                     </div>
+                    <audio id="player-audio" hidden></audio>
+                    <video id="player-video" hidden></video>
                 </div>
                 <div id="player-footer">
                     <input id="player-progress" type="range" value="0">
                     <div id="player-info">
-                        <div id="song"></div>
-                        <div id="duration"></div>
                         <div id="player-controls">
                             <div class="player-control" id="random">
                                 <i class="fa fa-random rotate-270"></i>
                             </div>
-                            <div class="player-control" id="repeat">
+                            <div class="player-control" id="loop">
                                 <i class="fa fa-repeat rotate-270"></i>
                             </div>
-                            <div class="player-control" id="stop">
+                            <div class="player-control disabled" id="stop">
                                 <i class="fa fa-stop"></i>
                             </div>
-                            <div class="player-control" id="play-prev">
+                            <div class="player-control disabled" id="play-prev">
                                 <i class="fa fa-fast-backward"></i>
                             </div>
                             <div class="player-control" id="play">
                                 <i class="fa fa-play ml-5"></i>
                             </div>
-                            <div class="player-control" id="play-next">
+                            <div class="player-control disabled" id="play-next">
                                 <i class="fa fa-fast-forward"></i>
                             </div>
                             <div class="player-control" id="mute">
@@ -590,13 +590,25 @@
                                 <input type="range" min="0" max="100" step="1" value="100">
                             </div>
                         </div>
-                        <div id="switchMode"></div>
+                        <div id="player-switch"></div>
                     </div>
                 </div>
             </div>
-
             <div class="window" id="window-wait">
                 <div class="container text-center text-bold">Please Wait</div>
+            </div>
+            <div class="window" id="window-info">
+                <div class="titlebar">
+                    <div class="title info">&nbsp;</div>
+                    <div class="controls">
+                        <div class="control closewin" data-target="#window-info">×</div>
+                    </div>
+                </div>
+                <div class="container">This feature is not yet available, please wait till next updates
+                    <div class="flex-right mt-5">
+                        <button class="bt bt-primary closewin" data-target="#window-info">OK</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="taskbar">
@@ -610,7 +622,7 @@
                     </div>
                     <div class="program player" data-toggle="window" data-target="#window-player">Windows Media Player
                     </div>
-                    <div class="program paint">Paint</div>
+                    <div class="program paint" data-toggle="window" data-target="#window-info">Paint</div>
                     <div class="program"></div>
                     <div class="program"></div>
                     <div class="program" id="search">
@@ -676,7 +688,9 @@
                         <div id="hour">00:00:00</div>
                     </div>
                 </div>
-                <div class="bottom"><a>Change date and time settings...</a></div>
+                <div class="bottom">
+                    <a data-toggle="window" data-target="#window-info">Change date and time settings...</a>
+                </div>
             </div>
             <div class="taskbar-popup" id="popup-battery">
                 <div class="top">
@@ -704,7 +718,7 @@
             </div>
         </div>
     </div>
-    <audio id="startup" src="resources/sound/Windows7-startup-sound.ogg"></audio>
+    <audio id="startup" src="resources/sound/Windows7-startup-sound.ogg" hidden></audio>
 </body>
 
 </html>
