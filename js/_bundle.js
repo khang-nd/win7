@@ -31,6 +31,7 @@ $(() => {
 
   // BOOT
   (function () {
+    const loads = [];
     const loadImage = (src) => {
       const deferred = $.Deferred();
       $('<img>', {
@@ -40,20 +41,23 @@ $(() => {
       });
       return deferred;
     };
-    $.get(`${href}resources/ico`, (data) => {
-      const loads = [];
+    const fetchData = (data) => {
+      let path = '/bg';
+      path = $(data).filter('title').text().indexOf(path) > -1 ? path : '/ico';
       $(data).find('a').each((_, a) => {
         if (/.(ico|png|jpe?g)/.test(a.innerText)) {
           const icon = $(a).find('.name').text() || a.innerText;
-          loads.push(loadImage(`${href}resources/ico/${icon}`));
+          loads.push(loadImage(`${href}resources${path}/${icon}`));
         }
       });
-      $.when(...loads).done(() => {
-        setTimeout(() => {
-          $BOOT.hide();
-          $LOGON.show();
-        }, 7500); // 7.5 secs for boot screen
-      });
+    };
+    const loadIco = $.get(`${href}resources/ico`, fetchData);
+    const loadBg = $.get(`${href}resources/bg`, fetchData);
+    $.when(...loads, loadIco, loadBg).done(() => {
+      setTimeout(() => {
+        $BOOT.hide();
+        $LOGON.show();
+      }, 7500); // 7.5 secs for boot screen
     });
   }());
 
