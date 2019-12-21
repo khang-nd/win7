@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable func-names */
 
-require('./sorting');
+require('./util');
 
 const SnippingTool = require('./snipping');
 const Calculator = require('./calculator');
@@ -14,9 +14,9 @@ const Windows = require('./windows');
 const Player = require('./mediaplayer');
 
 $(() => {
-  const path = '../resources/';
   const isEnter = (e) => e.key === 'Enter' || e.which === 13;
   const { random } = Math;
+  const { href } = window.location;
 
   const $BOOT = $('#boot');
   const $LOGON = $('#logon');
@@ -28,29 +28,49 @@ $(() => {
   const $STARTMENU = $('#start-menu');
   const $STARTBTTN = $('#start-button');
 
-  $.fn.flex = function () {
-    return this.css('display', 'flex');
-  };
-
   // BOOT
-  setTimeout(() => {
-    $BOOT.hide();
-    $LOGON.show();
-  }, random() * 11000 + 7000) // random from 7 - 18 seconds
+  (function () {
+    const loadImage = (src) => {
+      const deferred = $.Deferred();
+      $('<img>', {
+        src,
+        onload() { deferred.resolve(); },
+        appendTo: $('#preload'),
+      });
+      return deferred;
+    };
+    $.get(`${href}resources/ico`, (data) => {
+      const loads = [];
+      $(data).find('a').each((_, a) => {
+        if (/.(ico|png|jpe?g)/.test(a.innerText)) {
+          const icon = $(a).find('.name').text() || a.innerText;
+          loads.push(loadImage(`${href}resources/ico/${icon}`));
+        }
+      });
+      $.when(...loads).done(() => {
+        setTimeout(() => {
+          $BOOT.hide();
+          $LOGON.show();
+        }, 7500); // 7.5 secs for boot screen
+      });
+    });
+  }());
 
   // LOGON
-  $('#password').keyup((e) => {
-    if (isEnter(e)) $('#start').click();
-  });
-  $('#start').click(() => {
-    $('#password').val('');
-    $('#user').click();
-  });
-  $('#user').click(() => {
-    $('#startup')[0].play();
-    $LOGON.hide();
-    $WINDOW.show();
-  });
+  (function () {
+    $('#password').keyup((e) => {
+      if (isEnter(e)) $('#start').click();
+    });
+    $('#start').click(() => {
+      $('#password').val('');
+      $('#user').click();
+    });
+    $('#user').click(() => {
+      $('#startup')[0].play();
+      $LOGON.hide();
+      $WINDOW.show();
+    });
+  }());
 
   // BATTERY
   const updateBattery = () => {
@@ -258,24 +278,20 @@ $(() => {
 
   // toggle menu
   $DESKTOP
-    .on('click', (e) => {
+    .on('mousedown touchstart', (e) => {
       // if current target is not desktop menu -> hide
       if (
-        $(e.target)
+        $TOPMENU.is(':visible')
+        && $(e.target)
           .parents('#desktop-menu')
           .attr('id') !== 'desktop-menu'
-        && $TOPMENU.is(':visible')
-      ) {
-        $TOPMENU.hide();
-      }
+      ) $TOPMENU.hide();
     })
-    .on('contextmenu', (e) => {
+    .on('taphold contextmenu', (e) => {
       if (
         e.target.id !== 'desktop'
         && e.target.className.indexOf('icons') < 0
-      ) {
-        return;
-      }
+      ) return;
 
       e.preventDefault();
 
@@ -347,18 +363,19 @@ $(() => {
 
   // ============= PERSONALIZE ====================
   $('.theme').click(function () {
+    const self = this;
     const $body = $('#windows-container');
     const $wait = $('#window-wait');
     if ($body.hasClass(this.id)) return;
 
     function changeTheme() {
-      $body.attr('class', this.id);
-      $('#theme-name').text(this.innerText);
+      $body.attr('class', self.id);
+      $('#theme-name').text(self.innerText);
       $('.theme').removeClass('selected');
-      $(this).addClass('selected');
-      $('#startup')[0].src = /basic-2|basic-3|basic-4/.test(this.id)
-        ? `${path}sound/Windows7-startup-sound-classic.ogg`
-        : `${path}sound/Windows7-startup-sound.ogg`;
+      $(self).addClass('selected');
+      $('#startup')[0].src = /basic-2|basic-3|basic-4/.test(self.id)
+        ? `${href}resources/sound/Windows7-startup-sound-classic.ogg`
+        : `${href}resources/sound/Windows7-startup-sound.ogg`;
       $wait.hide();
     }
     $wait.show();

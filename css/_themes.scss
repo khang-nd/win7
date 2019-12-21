@@ -1,623 +1,604 @@
 $map: (
-    'aero-1': (
-        'bg': url($bgPath + 'default.jpg'),
-        'colors': rgba(170, 209, 251, 0.6) rgba(170, 209, 251, 0.3)
-    ),
-    'aero-2': (
-        'bg': url($bgPath + 'architecture.jpg'),
-        'colors': rgba(85, 132, 200, 0.6) rgba(85, 132, 200, 0.3)
-    ),
-    'aero-3': (
-        'bg': url($bgPath + 'landscape.jpg'),
-        'colors': rgba(171, 171, 171, 0.6) rgba(171, 171, 171, 0.3)
-    ),
-    'aero-4': (
-        'bg': url($bgPath + 'nature.jpg'),
-        'colors': rgba(179, 155, 207, 0.6) rgba(179, 155, 207, 0.3)
-    ),
-    'basic-1': (
-        'bg': url($bgPath + 'default.jpg'),
-        'colors': #a7bfd7 #a7bfd7 #fff
-    ),
-    'basic-2': (
-        'bg': #3b6ea4,
-        'colors': #d0d0d0 #0f75c9 #fff
-    ),
-    'basic-3': (
-        'bg': #000,
-        'colors': #fff #81007f #000
-    ),
-    'basic-4': (
-        'bg': #fff,
-        'colors': #fff #000 #fff
-    )
+  "aero-1": (
+    "bg": url($bgPath+"default.jpg"),
+    "colors": rgba(170, 209, 251, 0.6) rgba(170, 209, 251, 0.3)
+  ),
+  "aero-2": (
+    "bg": url($bgPath+"architecture.jpg"),
+    "colors": rgba(85, 132, 200, 0.6) rgba(85, 132, 200, 0.3)
+  ),
+  "aero-3": (
+    "bg": url($bgPath+"landscape.jpg"),
+    "colors": rgba(171, 171, 171, 0.6) rgba(171, 171, 171, 0.3)
+  ),
+  "aero-4": (
+    "bg": url($bgPath+"nature.jpg"),
+    "colors": rgba(179, 155, 207, 0.6) rgba(179, 155, 207, 0.3)
+  ),
+  "basic-1": (
+    "bg": url($bgPath+"default.jpg"),
+    "colors": #a7bfd7 #a7bfd7 #fff
+  ),
+  "basic-2": (
+    "bg": #3b6ea4,
+    "colors": #d0d0d0 #0f75c9 #fff
+  ),
+  "basic-3": (
+    "bg": #000,
+    "colors": #fff #81007f #000
+  ),
+  "basic-4": (
+    "bg": #fff,
+    "colors": #fff #000 #fff
+  )
 );
 
 @mixin theme($theme) {
-    $isAero: str-index($theme, 'basic')==null;
-    $this: map-get($map, $theme);
-    $bg: map-get($this, 'bg');
-    $colors: map-get($this, 'colors');
+  $isAero: str-index($theme, "basic") ==null;
+  $this: map-get($map, $theme);
+  $bg: map-get($this, "bg");
+  $colors: map-get($this, "colors");
 
-    // THEME PREVIEWS
-    ##{$theme} {
-        >.theme-bg {
-            @if($isAero or $theme=='basic-1') {
-                background-image: $bg;
-            }
+  // THEME PREVIEWS
+  ##{$theme} {
+    > .theme-bg {
+      @if ($isAero or $theme== "basic-1") {
+        background-image: $bg;
+      } @else {
+        background-color: $bg;
 
-            @else {
-                background-color: $bg;
-
-                @if($theme=='basic-4') {
-                    box-shadow: inset 0 0 0 1px #999
-                }
-            }
+        @if ($theme== "basic-4") {
+          box-shadow: inset 0 0 0 1px #999;
         }
-
-        >.theme-color {
-            @if($isAero) {
-                background-image: radial-gradient(circle at 100% 100%, nth($colors, 1) 65%, nth($colors, 2) 70%)
-            }
-
-            @else {
-                background: nth($colors, 1);
-
-                @if($theme !='basic-3') {
-                    box-shadow: 0.5px 0.5px 0 1px #000;
-                }
-
-                @if($theme=='basic-1') {
-                    box-shadow: 0.5px 0.5px 0 1px #000, inset 0 0 0 0.5px #fff;
-                    border-radius: 4px 4px 0 0;
-                    padding: 3px;
-                }
-
-                @else if($theme=='basic-2') {
-                    padding: 1px;
-                }
-
-                @else {
-                    padding: 0.5px;
-                }
-
-                &:before {
-                    @if($theme=='basic-1') {
-                        box-shadow: inset 0 0 0 4px nth($colors, 2), inset -7px -7px 0 nth($colors, 2);
-                    }
-
-                    @else {
-                        box-shadow: inset 0 0 0 5px nth($colors, 2), inset -7px -7px 0 nth($colors, 2);
-                        background: #fff;
-                    }
-                }
-
-                &:after {
-                    @if($theme=='basic-1') {
-                        box-shadow: inset 0 0 0 4px nth($colors, 3), inset -19px -19px 0 nth($colors, 3);
-                    }
-
-                    @else {
-                        box-shadow: inset 0 0 0 4px nth($colors, 3), inset -21px -21px 0 nth($colors, 3);
-                    }
-
-                    @if($theme=='basic-3') {
-                        background: #fff;
-                    }
-                }
-            }
-        }
+      }
     }
 
-    // THEME APPEARANCES
-    .#{$theme} {
-        #windows {
-            @if($isAero or $theme=='basic-1') {
-                background-image: $bg;
-            }
+    > .theme-color {
+      @if ($isAero) {
+        background-image: radial-gradient(
+          circle at 100% 100%,
+          nth($colors, 1) 65%,
+          nth($colors, 2) 70%
+        );
+      } @else {
+        background: nth($colors, 1);
 
-            @else {
-                background-color: $bg;
-            }
+        @if ($theme != "basic-3") {
+          box-shadow: 0.5px 0.5px 0 1px #000;
         }
 
-        @if($isAero) {
-
-            .window,
-            .taskbar-popup {
-                background:
-                    linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.3) 30%),
-                    linear-gradient(transparent 20%, #fff 40%, transparent 40%);
-            }
-
-            .window,
-            #taskbar,
-            #start-menu,
-            .taskbar-popup {
-                background-color: nth($colors, 1);
-            }
-
-            .controls>.control:last-child {
-                border-right: 0
-            }
-
-            .controls {
-                box-shadow: 0 1px 1px #eee;
-                border: 1px solid #666;
-                border-top: 0;
-            }
+        @if ($theme== "basic-1") {
+          box-shadow: 0.5px 0.5px 0 1px #000, inset 0 0 0 0.5px #fff;
+          border-radius: 4px 4px 0 0;
+          padding: 3px;
+        } @else if($theme== "basic-2") {
+          padding: 1px;
+        } @else {
+          padding: 0.5px;
         }
 
-        @else {
-
-            @if($theme=='basic-1' or $theme=='basic-2') {
-
-                .window,
-                #taskbar,
-                #start-menu,
-                .taskbar-popup {
-                    @if($theme=='basic-2') {
-                        background: nth($colors, 1);
-                    } @else {
-                        background-color: nth($colors, 1);
-                    }
-                }
-
-            }
-
-            @if($theme=='basic-1') {
-                .window:before {
-                    background: linear-gradient(rgba(0, 0, 0, 0.2), transparent 5%)
-                }
-
-                #start-menu hr {
-                    border-color: #999
-                }
-
-                #start-button {
-                    @include size(40px);
-                    margin: -6px 3px 0;
-                }
-
-                .titlebar>.controls {
-                    top: 0
-                }
-
-                .controls>.control {
-                    width: 26px !important;
-                    margin-left: 3px;
-                    border: 1px solid #666;
-                    border-radius: 3px;
-                }
-            }
-
-            @else {
-
-                #start-button,
-                #start-menu,
-                #start-menu .button,
-                .window,
-                .window .control,
-                .taskbar-item.left,
-                .taskbar-popup,
-                .bt {
-                    border: 2px solid;
-                    border-radius: 0;
-
-                    @if($theme=='basic-2') {
-                        border-color: #fff #333 #333 #fff;
-                    }
-
-                    @else if($theme=='basic-3') {
-                        border-color: #fff;
-                    }
-
-                    @else {
-                        border-color: #000;
-                    }
-                }
-
-                .window:before,
-                #taskbar:before,
-                #start-menu:before {
-                    content: none
-                }
-
-                #start-button {
-                    @include size(70px, 26px);
-                    line-height: 22px;
-                    margin: 5px;
-                    box-sizing: border-box;
-                    background-image: url($iconPath + 'start-button-classic.png');
-                    background-position: 3px;
-
-                    &:hover,
-                    &.active {
-                        filter: none;
-
-                        @if($theme=='basic-2') {
-                            border-color: #333 #fff #fff #333
-                        }
-                    }
-
-                    &:after {
-                        content: 'Start';
-                        padding-left: 26px;
-                        font-weight: bold
-                    }
-                }
-
-                #show-desktop {
-                    width: 20px;
-                    background: center center url($iconPath + 'desktop.ico') no-repeat;
-                    background-size: contain;
-                }            
-            }
+        &:before {
+          @if ($theme== "basic-1") {
+            box-shadow: inset 0 0 0 4px nth($colors, 2),
+              inset -7px -7px 0 nth($colors, 2);
+          } @else {
+            box-shadow: inset 0 0 0 5px nth($colors, 2),
+              inset -7px -7px 0 nth($colors, 2);
+            background: #fff;
+          }
         }
+
+        &:after {
+          @if ($theme== "basic-1") {
+            box-shadow: inset 0 0 0 4px nth($colors, 3),
+              inset -19px -19px 0 nth($colors, 3);
+          } @else {
+            box-shadow: inset 0 0 0 4px nth($colors, 3),
+              inset -21px -21px 0 nth($colors, 3);
+          }
+
+          @if ($theme== "basic-3") {
+            background: #fff;
+          }
+        }
+      }
     }
+  }
+
+  // THEME APPEARANCES
+  .#{$theme} {
+    #windows {
+      @if ($isAero or $theme== "basic-1") {
+        background-image: $bg;
+      } @else {
+        background-color: $bg;
+      }
+    }
+
+    @if ($isAero) {
+      .window,
+      .taskbar-popup {
+        background: linear-gradient(
+            135deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.3) 30%
+          ),
+          linear-gradient(transparent 20%, #fff 40%, transparent 40%);
+      }
+
+      .window,
+      #taskbar,
+      #start-menu,
+      .taskbar-popup {
+        background-color: nth($colors, 1);
+      }
+
+      .controls > .control:last-child {
+        border-right: 0;
+      }
+
+      .controls {
+        box-shadow: 0 1px 1px #eee;
+        border: 1px solid #666;
+        border-top: 0;
+      }
+    } @else {
+      @if ($theme== "basic-1" or $theme== "basic-2") {
+        .window,
+        #taskbar,
+        #start-menu,
+        .taskbar-popup {
+          @if ($theme== "basic-2") {
+            background: nth($colors, 1);
+          } @else {
+            background-color: nth($colors, 1);
+          }
+        }
+      }
+
+      @if ($theme== "basic-1") {
+        .window:before {
+          background: linear-gradient(rgba(0, 0, 0, 0.2), transparent 5%);
+        }
+
+        #start-menu hr {
+          border-color: #999;
+        }
+
+        #start-button {
+          @include size(40px);
+          margin: -6px 3px 0;
+        }
+
+        .titlebar > .controls {
+          top: 0;
+        }
+
+        .controls > .control {
+          width: 26px !important;
+          margin-left: 3px;
+          border: 1px solid #666;
+          border-radius: 3px;
+        }
+      } @else {
+        #start-button,
+        #start-menu,
+        #start-menu .button,
+        .window,
+        .window .control,
+        .taskbar-item.left,
+        .taskbar-popup,
+        .bt {
+          border: 2px solid;
+          border-radius: 0;
+
+          @if ($theme== "basic-2") {
+            border-color: #fff #333 #333 #fff;
+          } @else if($theme== "basic-3") {
+            border-color: #fff;
+          } @else {
+            border-color: #000;
+          }
+        }
+
+        .window:before,
+        #taskbar:before,
+        #start-menu:before {
+          content: none;
+        }
+
+        #start-button {
+          @include size(70px, 26px);
+          line-height: 22px;
+          margin: 5px;
+          box-sizing: border-box;
+          background-image: url($iconPath+"start-button-classic.png");
+          background-position: 3px;
+
+          &:hover,
+          &.active {
+            filter: none;
+
+            @if ($theme== "basic-2") {
+              border-color: #333 #fff #fff #333;
+            }
+          }
+
+          &:after {
+            content: "Start";
+            padding-left: 26px;
+            font-weight: bold;
+          }
+        }
+
+        #show-desktop {
+          width: 20px;
+          background: center center url($iconPath+"desktop.ico") no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+  }
 }
 
 /***** THEMES *****/
 
 /* AERO 1 - WINDOWS 7 */
-@include theme('aero-1');
+@include theme("aero-1");
 /* AERO-2 - ARCHITECTURE */
-@include theme('aero-2');
+@include theme("aero-2");
 /* AERO-3 - LANDSCAPES */
-@include theme('aero-3');
+@include theme("aero-3");
 /* AERO-4 - NATURE */
-@include theme('aero-4');
+@include theme("aero-4");
 /* BASIC-1 - WINDOWS 7 */
-@include theme('basic-1');
+@include theme("basic-1");
 /* BASIC-2 - WINDOWS CLASSIC */
-@include theme('basic-2');
+@include theme("basic-2");
 
 .basic-2 {
-    %hover {
-        background-color: #082767;
-        color: #fff;
+  %hover {
+    background-color: #082767;
+    color: #fff;
+  }
+
+  %noImage {
+    background-image: none;
+  }
+
+  %noBo {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  #start-menu {
+    hr {
+      border-color: #eee;
     }
 
-    %noImage {
-        background-image: none;
+    > #programs {
+      background: none;
     }
 
-    %noBo {
-        border-radius: 0;
-        box-shadow: none;
+    > #links {
+      color: #000;
+      border-left: 1px solid #eee;
     }
 
-    #start-menu {
-
-        hr {
-            border-color: #eee
-        }
-
-        >#programs {
-            background: none
-        }
-
-        >#links {
-            color: #000;
-            border-left: 1px solid #eee
-        }
-
-        .button {
-            background: none;
-            box-shadow: none;
-        }
-
-        .link:not(:last-child):hover {
-            @extend %hover;
-            @extend %noImage;
-        }
-
-        .program:hover {
-            @extend %hover;
-        }
+    .button {
+      background: none;
+      box-shadow: none;
     }
 
-    .window {
-        @extend %noBo;
-
-        .controls {
-            top: 0;
-
-            >.control {
-                width: 20px;
-                background: #d0d0d0;
-                color: #000;
-                text-shadow: none;
-            }
-
-        }
-
-        >.titlebar {
-            background: linear-gradient(to right, #7f7e78, transparent)
-        }
-
-        .title {
-            text-shadow: none;
-            color: #fff;
-            font-weight: bold
-        }
-
-        .addr {
-            background-color: transparent;
-            border-color: #999 #fff #fff #999;
-
-            input {
-                background: #fff;
-                border-color: #999 #fff #fff #999;
-            }
-        }
-
-        .toolbar {
-            background: none;
-            border: none
-        }
-
-        .container {
-            border-color: #ddd;
-        }
+    .link:not(:last-child):hover {
+      @extend %hover;
+      @extend %noImage;
     }
 
-    .toolbar-item-lv2 {
-        >li:hover {
-            @extend %hover;
-            @extend %noImage;
-        }
+    .program:hover {
+      @extend %hover;
     }
+  }
 
-    .menu-item:hover {
-        @extend %hover;
-    }
+  .window {
+    @extend %noBo;
 
-    .taskbar-item {
-        color: #000;
+    .controls {
+      top: 0;
 
-        &.left:before {
-            content: none;
-        }
-    }
-
-    .storage-bar {
-        @extend %noBo;
-
-        >div {
-            background: #082767;
-        }
-
-        &.redbar>div {
-            background: #e50001;
-        }
-    }
-
-    .bt {
+      > .control {
+        width: 20px;
         background: #d0d0d0;
-        box-shadow: none;
-
-        &.bt-primary {
-            box-shadow: inset -1px -1px 0 #aaa
-        }
-
-        &.bt-secondary {
-            border-color: #fff #999 #999 #fff
-        }
+        color: #000;
+        text-shadow: none;
+      }
     }
 
-    #window-player {
-        >.addrbar {
-            background: none;
-            border-color: transparent
-        }
-
-        >.container {
-            @extend %noImage;
-        }
+    > .titlebar {
+      background: linear-gradient(to right, #7f7e78, transparent);
     }
+
+    .title {
+      text-shadow: none;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .addr {
+      background-color: transparent;
+      border-color: #999 #fff #fff #999;
+
+      input {
+        background: #fff;
+        border-color: #999 #fff #fff #999;
+      }
+    }
+
+    .toolbar {
+      background: none;
+      border: none;
+    }
+
+    .container {
+      border-color: #ddd;
+    }
+  }
+
+  .toolbar-item-lv2 {
+    > li:hover {
+      @extend %hover;
+      @extend %noImage;
+    }
+  }
+
+  .menu-item:hover {
+    @extend %hover;
+  }
+
+  .taskbar-item {
+    color: #000;
+
+    &.left:before {
+      content: none;
+    }
+  }
+
+  .storage-bar {
+    @extend %noBo;
+
+    > div {
+      background: #082767;
+    }
+
+    &.redbar > div {
+      background: #e50001;
+    }
+  }
+
+  .bt {
+    background: #d0d0d0;
+    box-shadow: none;
+
+    &.bt-primary {
+      box-shadow: inset -1px -1px 0 #aaa;
+    }
+
+    &.bt-secondary {
+      border-color: #fff #999 #999 #fff;
+    }
+  }
+
+  #window-player {
+    > .addrbar {
+      background: none;
+      border-color: transparent;
+    }
+
+    > .container {
+      @extend %noImage;
+    }
+  }
 }
 
 /* BASIC-3 - CONTRAST BLACK */
-@include theme('basic-3');
+@include theme("basic-3");
 
 .basic-3 {
-    color: #fff
+  color: #fff;
 }
 
 .basic-3 .window,
-.basic-3 .window>.container,
-.basic-3 .window>.toolbar,
+.basic-3 .window > .container,
+.basic-3 .window > .toolbar,
 .basic-3 #taskbar,
 .basic-3 #start-menu,
-.basic-3 #start-menu>#programs,
+.basic-3 #start-menu > #programs,
 .basic-3 .window .control,
 .basic-3 .toolbar-item-lv2,
-.basic-3 #window-calc>.container,
+.basic-3 #window-calc > .container,
 .basic-3 .bt,
 .basic-3 .button,
 .basic-3 .taskbar-popup {
-    background: #000;
-    color: #fff;
-    box-shadow: none
+  background: #000;
+  color: #fff;
+  box-shadow: none;
 }
-
 
 .basic-3 .button {
-    border-radius: 0
+  border-radius: 0;
 }
 
-.basic-3 .window>.titlebar,
+.basic-3 .window > .titlebar,
 .basic-3 #start-menu .program:hover,
 .basic-3 #start-menu .link:not(:last-child):hover,
-.basic-3 .toolbar-item-lv2>li:hover {
-    background-color: #81007f;
-    border-color: transparent
+.basic-3 .toolbar-item-lv2 > li:hover {
+  background-color: #81007f;
+  border-color: transparent;
 }
 
 .basic-3 #start-menu .link:not(:last-child):hover {
-    background-image: none
+  background-image: none;
 }
 
 .basic-3 #taskbar {
-    border-top: 2px solid #fff
+  border-top: 2px solid #fff;
 }
 
 .basic-3 .taskbar-item.left:before {
-    content: none
+  content: none;
 }
 
 .basic-3 .window .title {
-    font-weight: bold;
-    text-shadow: none
+  font-weight: bold;
+  text-shadow: none;
 }
 
 .basic-3 .window .controls {
-    top: 0
+  top: 0;
 }
 
 .basic-3 .window .control {
-    width: 20px;
-    text-shadow: none;
-    margin: 2px;
-    border-width: 1px;
+  width: 20px;
+  text-shadow: none;
+  margin: 2px;
+  border-width: 1px;
 }
 
 .basic-3 .addr,
 .basic-3 .addrbar input {
-    background-color: #000;
-    color: #fff
+  background-color: #000;
+  color: #fff;
 }
 
 .basic-3 .toolbar-item {
-    color: #fff !important
+  color: #fff !important;
 }
 
-.basic-3 .toolbar-item-lv2>li:hover {
-    background-image: none
+.basic-3 .toolbar-item-lv2 > li:hover {
+  background-image: none;
 }
 
 .basic-3 .storage-bar {
-    border-radius: 0
+  border-radius: 0;
 }
 
-.basic-3 .storage-bar>div {
-    background: #81007f
+.basic-3 .storage-bar > div {
+  background: #81007f;
 }
 
-.basic-3 .red-bar>div {
-    background: #e50001
+.basic-3 .red-bar > div {
+  background: #e50001;
 }
 
-.basic-3 #window-player>.addrbar {
-    background: none;
-    border-color: transparent
+.basic-3 #window-player > .addrbar {
+  background: none;
+  border-color: transparent;
 }
 
-.basic-3 #window-player>.container {
-    background-image: none
+.basic-3 #window-player > .container {
+  background-image: none;
 }
 
 /* BASIC-4 - CONTRAST WHITE */
-@include theme('basic-4');
+@include theme("basic-4");
 
 /* BASIC-4 - CONTRAST WHITE */
 .basic-4,
-.basic-4 .icon>label,
+.basic-4 .icon > label,
 .basic-4 .taskbar-item {
-    color: #000;
-    text-shadow: none
+  color: #000;
+  text-shadow: none;
 }
 
 .basic-4 .window,
-.basic-4 .window>.container,
-.basic-4 .window>.toolbar,
+.basic-4 .window > .container,
+.basic-4 .window > .toolbar,
 .basic-4 #taskbar,
 .basic-4 #start-menu,
-.basic-4 #start-menu>#links,
+.basic-4 #start-menu > #links,
 .basic-4 .window .control,
 .basic-4 .toolbar-item-lv2,
-.basic-4 #window-calc>.container,
+.basic-4 #window-calc > .container,
 .basic-4 .bt,
 .basic-4 .button,
 .basic-4 .taskbar-popup {
-    background: #fff;
-    color: #000;
-    box-shadow: none
+  background: #fff;
+  color: #000;
+  box-shadow: none;
 }
 
 .basic-4 .button {
-    border-radius: 0
+  border-radius: 0;
 }
 
-.basic-4 .window>.titlebar,
+.basic-4 .window > .titlebar,
 .basic-4 #start-menu .program:hover,
 .basic-4 #start-menu .link:not(:last-child):hover,
-.basic-4 .toolbar-item-lv2>li:hover {
-    background-color: #000;
-    color: #fff;
-    border-color: transparent
+.basic-4 .toolbar-item-lv2 > li:hover {
+  background-color: #000;
+  color: #fff;
+  border-color: transparent;
 }
 
 .basic-4 #start-menu .link:not(:last-child):hover {
-    background-image: none
+  background-image: none;
 }
 
 .basic-4 #taskbar {
-    border-top: 2px solid #000
+  border-top: 2px solid #000;
 }
 
 .basic-4 .taskbar-item.left:before {
-    content: none
+  content: none;
 }
 
 .basic-4 .window .title {
-    font-weight: bold;
-    text-shadow: none
+  font-weight: bold;
+  text-shadow: none;
 }
 
 .basic-4 .window .controls {
-    top: 0
+  top: 0;
 }
 
 .basic-4 .window .control {
-    width: 20px;
-    text-shadow: none;
-    margin: 2px;
-    border-width: 1px;
+  width: 20px;
+  text-shadow: none;
+  margin: 2px;
+  border-width: 1px;
 }
 
 .basic-4 .addr,
 .basic-4 .addrbar input {
-    background-color: #fff;
-    color: #000
+  background-color: #fff;
+  color: #000;
 }
 
 .basic-4 .toolbar-item {
-    color: #000 !important
+  color: #000 !important;
 }
 
-.basic-4 .toolbar-item-lv2>li:hover {
-    background-image: none
+.basic-4 .toolbar-item-lv2 > li:hover {
+  background-image: none;
 }
 
 .basic-4 .storage-bar {
-    border-radius: 0
+  border-radius: 0;
 }
 
-.basic-4 .storage-bar>div {
-    background: #000
+.basic-4 .storage-bar > div {
+  background: #000;
 }
 
-.basic-4 .red-bar>div {
-    background: #e50001
+.basic-4 .red-bar > div {
+  background: #e50001;
 }
 
-.basic-4 #window-player>.addrbar {
-    background: none;
-    border-color: transparent
+.basic-4 #window-player > .addrbar {
+  background: none;
+  border-color: transparent;
 }
 
-.basic-4 #window-player>.container {
-    background-image: none
+.basic-4 #window-player > .container {
+  background-image: none;
 }

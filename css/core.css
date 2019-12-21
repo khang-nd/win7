@@ -2537,6 +2537,19 @@
 }
 
 /***** UTILITIES *****/
+#preload {
+  width: 0;
+  height: 0;
+  position: absolute;
+  overflow: hidden;
+  z-index: -1;
+}
+
+#preload > img {
+  width: 0;
+  height: 0;
+}
+
 th.sortable {
   position: relative;
   min-width: 55px;

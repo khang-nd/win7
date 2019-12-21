@@ -151,6 +151,17 @@ $headline: #3083b7;
 @import "responsive";
 
 /***** UTILITIES *****/
+#preload {
+  @include size(0);
+  position: absolute;
+  overflow: hidden;
+  z-index: -1;
+
+  >img {
+    @include size(0);
+  }
+}
+
 th.sortable {
   position: relative;
   min-width: 55px;

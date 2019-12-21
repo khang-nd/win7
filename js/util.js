@@ -1,10 +1,11 @@
-/**
- * sorttable.js (modified)
- * jQuery plug-in that allows sorting table by column
- * https://www.jqueryscript.net/table/Simplest-jQuery-Sortable-Table-Plugin-sorttable-js.html
- */
+/* eslint-disable no-param-reassign */
 /* eslint-disable func-names */
 module.export = (function ($) {
+  /**
+   * sorttable.js (modified)
+   * jQuery plug-in that allows sorting table by column
+   * https://www.jqueryscript.net/table/Simplest-jQuery-Sortable-Table-Plugin-sorttable-js.html
+   */
   $.fn.addSortWidget = function () {
     const table = $(this);
     let isAscending = true;
@@ -33,5 +34,28 @@ module.export = (function ($) {
     });
 
     return table;
+  };
+
+  /**
+   * Custom hold event
+   */
+  const taphold = {
+    time: 750,
+    setup() {
+      $(this).bind('touchstart mousedown', taphold.time, (e) => {
+        const $this = $(this);
+        $this.data('taphold', setTimeout(() => {
+          $this.trigger($.extend(e, $.Event('taphold')));
+        }, e.data));
+      });
+      $(this).bind('touchend touchmove mouseup mousemove', () => {
+        clearTimeout($(this).data('taphold'));
+      });
+    },
+  };
+  $.event.special.taphold = taphold;
+
+  $.fn.flex = function () {
+    return this.css('display', 'flex');
   };
 }(jQuery));
