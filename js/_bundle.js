@@ -867,8 +867,10 @@ module.exports = (elements) => {
   const FONT = elements.font;
   const DELETE = elements.delete;
   const DATETIME = elements.datetime;
-  let start; let
-    end; // cursor position
+
+  // cursor position
+  let start;
+  let end;
 
   // file
   NEW.click(() => EDITOR.val(''));
@@ -1212,6 +1214,7 @@ module.exports = function ($windows) {
   };
 
   this.focus = (e) => {
+    if (e.target.dataset.toggle) return;
     const $target = $(e.target).hasClass('window')
       ? $(e.target)
       : $(e.target).parents('.window');

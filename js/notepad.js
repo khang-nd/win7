@@ -12,8 +12,10 @@ module.exports = (elements) => {
   const FONT = elements.font;
   const DELETE = elements.delete;
   const DATETIME = elements.datetime;
-  let start; let
-    end; // cursor position
+
+  // cursor position
+  let start;
+  let end;
 
   // file
   NEW.click(() => EDITOR.val(''));

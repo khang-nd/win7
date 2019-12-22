@@ -63,6 +63,7 @@ module.exports = function ($windows) {
   };
 
   this.focus = (e) => {
+    if (e.target.dataset.toggle) return;
     const $target = $(e.target).hasClass('window')
       ? $(e.target)
       : $(e.target).parents('.window');

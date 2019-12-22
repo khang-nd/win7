@@ -200,6 +200,14 @@
     }
   }
 
+  .active:before {
+    @include position(absolute, calc(50% - 2.5px), 6px);
+    @include size(5px);
+    content: "";
+    border-radius: 50%;
+    background: currentColor;
+  }
+
   > hr {
     margin: 0 3px;
     border-color: #fff;
