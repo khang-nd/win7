@@ -1,17 +1,19 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-param-reassign */
 /* eslint-disable func-names */
+import 'font-awesome/css/font-awesome.min.css';
 
-require('./util');
+import $, { Deferred, get, when } from 'jquery';
+import './util';
+import 'webpack-jquery-ui';
+import 'jquery-ui-touch-punch';
 
-const SnippingTool = require('./snipping');
-const Calculator = require('./calculator');
-const Browser = require('./browser');
-const Notepad = require('./notepad');
-const Calendar = require('./calendar');
-const Window = require('./window');
-const Windows = require('./windows');
-const Player = require('./mediaplayer');
+import SnippingTool from './snipping';
+import Calculator from './calculator';
+import Browser from './browser';
+import Notepad from './notepad';
+import Calendar from './calendar';
+import Window from './window';
+import Windows from './windows';
+import Player from './mediaplayer';
 
 $(() => {
   const isEnter = (e) => e.key === 'Enter' || e.which === 13;
@@ -32,7 +34,7 @@ $(() => {
   (function () {
     const loads = [];
     const loadImage = (src) => {
-      const deferred = $.Deferred();
+      const deferred = Deferred();
       $('<img>', {
         src,
         onload() { deferred.resolve(); },
@@ -50,9 +52,9 @@ $(() => {
         }
       });
     };
-    const loadIco = $.get(`${href}resources/ico`, fetchData);
-    const loadBg = $.get(`${href}resources/bg`, fetchData);
-    $.when(...loads, loadIco, loadBg).done(() => {
+    const loadIco = get(`${href}resources/ico`, fetchData);
+    const loadBg = get(`${href}resources/bg`, fetchData);
+    when(...loads, loadIco, loadBg).done(() => {
       setTimeout(() => {
         $BOOT.hide();
         $LOGON.show();

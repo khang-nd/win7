@@ -1,6 +1,11 @@
 {
     "git.ignoreLimitWarning": true,
-    "command-runner.commands":{
-        "Watchify Bundle": "node_modules\\.bin\\watchify js/_core.js -o js/_bundle.js -v"
-    }
+    "liveSassCompile.settings.generateMap": false,
+    "liveSassCompile.settings.formats": [
+        {
+            "format": "compressed",
+            "extensionName": ".min.css",
+            "savePath": "/dist"
+        }
+    ]
 }

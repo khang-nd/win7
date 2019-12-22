@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.1
+
+* Switch from Browserify to Webpack as the application bundler.
+
 ## 1.0.0
 
 First version with some raw interface and functionalities

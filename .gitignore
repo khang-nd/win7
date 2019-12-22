@@ -1,1 +1,6 @@
 node_modules
+# Ignore everything in dist except some
+dist/*
+!dist/index.html
+!dist/resources
+!dist/favicon.ico

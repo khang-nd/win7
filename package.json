@@ -1,31 +1,36 @@
 {
   "name": "windows7",
-  "version": "0.9.0",
-  "description": "A Windows 7 simulation supported on multiple devices",
-  "main": "index.html",
-  "directories": {
-    "lib": "lib"
-  },
+  "version": "1.0.1",
+  "description": "A Windows 7 simulation using web components",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/khang-nd/windows7.git"
   },
   "author": "Nguyen Duy Khang",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/khang-nd/windows7/issues"
   },
   "homepage": "https://github.com/khang-nd/windows7#readme",
   "devDependencies": {
+    "css-loader": "^3.4.0",
     "eslint": "^6.7.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2"
+    "eslint-plugin-import": "^2.18.2",
+    "style-loader": "^1.1.1",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10"
   },
   "dependencies": {
+    "file-loader": "^5.0.2",
+    "font-awesome": "^4.7.0",
     "html2canvas": "^1.0.0-rc.5",
-    "watchify": "^3.11.1"
+    "jquery": "^3.4.1",
+    "jquery-ui-touch-punch": "^0.2.3",
+    "webpack-jquery-ui": "^2.0.1"
   }
 }

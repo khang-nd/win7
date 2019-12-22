@@ -11,12 +11,17 @@ It supports both desktop and mobile devices.
 * [jQuery UI](https://jqueryui.com/)
 * [Touch Punch](http://touchpunch.furf.com/)
 * [html2canvas](https://html2canvas.hertzen.com/)
+* [Font Awesome](https://fontawesome.com/v4.7.0/)
 
-## Others
+## Bundlers
 
 * [SCSS](https://sass-lang.com/) - A CSS preprocessor.
-* [Font Awesome](https://fontawesome.com/v4.7.0/) - provides powerful icons.
-* [Browserify](http://browserify.org/) ([watchify](https://github.com/browserify/watchify)) - allows JS to be written in NodeJS modular style.
+* [Webpack](https://webpack.js.org/) - A module bundler for web apps.
+
+## Development dependencies
+
+* [ESLint](https://eslint.org/)
+* [Live Sass Compiler](https://marketplace.visualstudio.com/items?itemName=ritwickdey.live-sass)
 
 ## Known Bugs
 
