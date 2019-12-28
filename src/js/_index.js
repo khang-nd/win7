@@ -18,8 +18,7 @@ import Player from './mediaplayer';
 $(() => {
   const isEnter = (e) => e.key === 'Enter' || e.which === 13;
   const { random } = Math;
-  let { href } = window.location;
-  let temp;
+  const { href } = window.location;
 
   const $BOOT = $('#boot');
   const $LOGON = $('#logon');
@@ -33,17 +32,6 @@ $(() => {
 
   // BOOT
   (function () {
-    if (!/https?:/.test(window.location.protocol)) {
-      temp = href.split('/');
-      temp.pop();
-      href = `${temp.join('/')}/`;
-      setTimeout(() => {
-        $BOOT.hide();
-        $LOGON.show();
-      }, random() * (18000 - 8000) + 8000);
-      return;
-    }
-
     const loads = [];
     const loadImage = (src) => {
       const deferred = Deferred();
@@ -64,14 +52,18 @@ $(() => {
         }
       });
     };
-    const loadIco = get(`${href}resources/ico`, fetchData);
-    const loadBg = get(`${href}resources/bg`, fetchData);
-    when(...loads, loadIco, loadBg).done(() => {
+    const proceed = (time) => {
       setTimeout(() => {
         $BOOT.hide();
         $LOGON.show();
-      }, 7500); // 7.5 secs for boot screen
-    });
+      }, time);
+    };
+    const loadIco = get(`${href}resources/ico`, fetchData);
+    const loadBg = get(`${href}resources/bg`, fetchData);
+    when(...loads, loadIco, loadBg).then(
+      () => proceed(7500),
+      () => proceed(random() * (18000 - 8000) + 8000),
+    );
   }());
 
   // LOGON
