@@ -1,7 +1,5 @@
 # Windows 7 Simulation
 
-> *Version: 1.0.0*
-
 Windows 7 Simulation is a small project to simulate the user interface and functionalities of Windows 7 using pure web components and libraries.
 It supports both desktop and mobile devices.
 

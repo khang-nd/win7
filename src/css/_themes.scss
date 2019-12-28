@@ -1,22 +1,22 @@
 $map: (
   "aero-1": (
-    "bg": url($bgPath+"default.jpg"),
+    "bg": url($bgPath+"default.webp"),
     "colors": rgba(170, 209, 251, 0.6) rgba(170, 209, 251, 0.3)
   ),
   "aero-2": (
-    "bg": url($bgPath+"architecture.jpg"),
+    "bg": url($bgPath+"architecture.webp"),
     "colors": rgba(85, 132, 200, 0.6) rgba(85, 132, 200, 0.3)
   ),
   "aero-3": (
-    "bg": url($bgPath+"landscape.jpg"),
+    "bg": url($bgPath+"landscape.webp"),
     "colors": rgba(171, 171, 171, 0.6) rgba(171, 171, 171, 0.3)
   ),
   "aero-4": (
-    "bg": url($bgPath+"nature.jpg"),
+    "bg": url($bgPath+"nature.webp"),
     "colors": rgba(179, 155, 207, 0.6) rgba(179, 155, 207, 0.3)
   ),
   "basic-1": (
-    "bg": url($bgPath+"default.jpg"),
+    "bg": url($bgPath+"default.webp"),
     "colors": #a7bfd7 #a7bfd7 #fff
   ),
   "basic-2": (
@@ -212,7 +212,7 @@ $map: (
           line-height: 22px;
           margin: 5px;
           box-sizing: border-box;
-          background-image: url($iconPath+"start-button-classic.png");
+          background-image: url($iconPath+"start-button-classic.webp");
           background-position: 3px;
 
           &:hover,

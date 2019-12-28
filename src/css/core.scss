@@ -122,15 +122,15 @@ $headline: #3083b7;
 }
 
 /***** ICONS *****/
-@include icon("ie", "ie.png");
-@include icon("bin", "recycle-bin.ico");
-@include icon("file", "file.png");
-@include icon("about", "installer.png");
-@include icon("calc", "calculator.png");
-@include icon("paint", "paint.png");
-@include icon("snipping", "snipping-tool.png");
-@include icon("notepad", "notepad.png");
+@include icon("ie", "ie.webp");
+@include icon("about", "installer.webp");
+@include icon("calc", "calculator.webp");
+@include icon("paint", "paint.webp");
+@include icon("snipping", "snipping-tool.webp");
+@include icon("notepad", "notepad.webp");
 @include icon("computer", "my-computer.ico");
+@include icon("bin", "recycle-bin.ico");
+@include icon("file", "file.ico");
 @include icon("folder", "folder.ico");
 @include icon("personal", "personal.ico");
 @include icon("desktop", "desktop.ico");
