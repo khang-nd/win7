@@ -17,7 +17,7 @@
   @include size($screenw, $screenh);
   display: none;
   text-align: center;
-  background: url($bgPath+"login.jpg");
+  background: url($bgPath+"login.webp");
   background-position: center;
   background-size: cover;
 }

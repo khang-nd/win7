@@ -2,5 +2,7 @@ node_modules
 # Ignore everything in dist except some
 dist/*
 !dist/index.html
+!dist/core.min.css
+!dist/main.js
 !dist/resources
 !dist/favicon.ico

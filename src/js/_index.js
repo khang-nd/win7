@@ -18,7 +18,8 @@ import Player from './mediaplayer';
 $(() => {
   const isEnter = (e) => e.key === 'Enter' || e.which === 13;
   const { random } = Math;
-  const { href } = window.location;
+  let { href } = window.location;
+  let temp;
 
   const $BOOT = $('#boot');
   const $LOGON = $('#logon');
@@ -32,6 +33,17 @@ $(() => {
 
   // BOOT
   (function () {
+    if (!/https?:/.test(window.location.protocol)) {
+      temp = href.split('/');
+      temp.pop();
+      href = `${temp.join('/')}/`;
+      setTimeout(() => {
+        $BOOT.hide();
+        $LOGON.show();
+      }, random() * (18000 - 8000) + 8000);
+      return;
+    }
+
     const loads = [];
     const loadImage = (src) => {
       const deferred = Deferred();
@@ -46,7 +58,7 @@ $(() => {
       let path = '/bg';
       path = $(data).filter('title').text().indexOf(path) > -1 ? path : '/ico';
       $(data).find('a').each((_, a) => {
-        if (/.(ico|png|jpe?g)/.test(a.innerText)) {
+        if (/.(ico|webp)/.test(a.innerText)) {
           const icon = $(a).find('.name').text() || a.innerText;
           loads.push(loadImage(`${href}resources${path}/${icon}`));
         }
