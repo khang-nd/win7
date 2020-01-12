@@ -1,5 +1,5 @@
-/* eslint-disable func-names */
-/* eslint-disable no-undef */
+import $ from 'jquery';
+
 const TEMPLATE = (title, index) => `
     <div class="window" id="window-folder-${index}">
         <div class="titlebar">
@@ -27,7 +27,7 @@ const TEMPLATE = (title, index) => `
     </div>`;
 
 let index = 0;
-module.exports = function ($desktop) {
+export default function ($desktop) {
   this.create = (e) => {
     const $target = $(e.target);
     const title = e.target.value;
@@ -45,4 +45,4 @@ module.exports = function ($desktop) {
       });
     index += 1;
   };
-};
+}

@@ -11,7 +11,7 @@
     "url": "git+https://github.com/khang-nd/windows7.git"
   },
   "author": "Nguyen Duy Khang",
-  "license": "UNLICENSED",
+  "license": "MPL 2.0",
   "bugs": {
     "url": "https://github.com/khang-nd/windows7/issues"
   },
@@ -31,6 +31,7 @@
     "html2canvas": "^1.0.0-rc.5",
     "jquery": "^3.4.1",
     "jquery-ui-touch-punch": "^0.2.3",
-    "webpack-jquery-ui": "^2.0.1"
+    "webpack-jquery-ui": "^2.0.1",
+    "x-frame-bypass": "^1.0.2"
   }
 }

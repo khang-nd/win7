@@ -1,15 +1,18 @@
-/* eslint-disable func-names */
-/* eslint-disable no-undef */
-module.exports = (elements) => {
+/* eslint-disable no-fallthrough */
+import $ from 'jquery';
+
+export default (elements) => {
   // elements
   const $audioBrowser = elements.audioBrowser;
   const $videoBrowser = elements.videoBrowser;
   const $photoBrowser = elements.photoBrowser;
   const $playlist = elements.playlist;
+  const $library = elements.library;
   const $volume = elements.volume;
   const $progress = elements.progress;
-  const $audio = elements.audio[0];
-  const $video = elements.video[0];
+  const $audio = elements.audio;
+  const $video = elements.video;
+  const $photo = elements.photo;
   const $random = elements.random;
   const $loop = elements.loop;
   const $play = elements.play;
@@ -39,56 +42,79 @@ module.exports = (elements) => {
     low: 'fa fa-volume-down',
     high: 'fa fa-volume-up',
   };
+  const PLAYER = {
+    photo: 'player-photo',
+    video: 'player-video',
+    audio: 'player-audio',
+  };
+  const { floor, round, random } = Math;
 
+  // GLOBAL VARIABLES
   let current; // current file name
   let sources = [];
   let isLoop = false;
   let isRandom = false;
-  const { round, random } = Math;
+  let player; // player depends on file type
+  let playPromise;
 
-  const changeState = (state) => {
+  function changeState(state) {
+    const { id } = player;
     switch (state) {
       case STOP:
-        $audio.pause();
-        $audio.currentTime = 0;
+        if (id !== PLAYER.photo && playPromise) {
+          playPromise.then(() => player.pause());
+          player.currentTime = 0;
+        }
+        if (id !== PLAYER.audio) {
+          $(player)
+            .hide()
+            .parents('.window').removeClass('now-playing');
+        }
         $playic.attr('class', icon.play);
         $stop.addClass('disabled');
         break;
       case PLAY:
         if (!sources.length) return;
-        if (!$audio.src) $audio.src = sources[0].src;
-        $audio.play();
+        if (!player.src) player.src = sources[0].src;
+        if (id !== PLAYER.photo) playPromise = player.play();
+        if (id !== PLAYER.audio) {
+          $(player)
+            .show()
+            .parents('.window').addClass('now-playing');
+        }
         $playic.attr('class', icon.pause);
         $stop.removeClass('disabled');
         break;
       case PAUSE:
-        $audio.pause();
+        if (id !== PLAYER.photo && playPromise) {
+          playPromise.then(() => player.pause());
+        }
         $playic.attr('class', icon.play);
         $stop.removeClass('disabled');
         break;
       case MUTE:
-        $audio.muted = true;
+        player.muted = true;
         $muteic.attr('class', icon.mute);
         break;
       case SEEK:
-        $progress.val($audio.currentTime);
-        $progress.css('background', `linear-gradient(to right, #0365c8 ${($audio.currentTime / $audio.duration) * 100 - 1}%, transparent ${($audio.currentTime / $audio.duration) * 100}%)`);
+        $progress.val(player.currentTime);
+        $progress.css('background', `linear-gradient(to right, #0365c8 ${(player.currentTime / player.duration) * 100 - 1}%, transparent ${(player.currentTime / player.duration) * 100}%)`);
         break;
       default: // change volume
-        $audio.muted = false;
-        $volume.css('background', `linear-gradient(to right, #0365c8 ${$audio.volume * 100}%, transparent ${$audio.volume * 100}%)`);
-        if ($audio.volume > 0.5) $muteic.attr('class', icon.high);
-        else if ($audio.volume === 0) $muteic.attr('class', icon.mute);
+        player.muted = false;
+        $volume.css('background', `linear-gradient(to right, #0365c8 ${player.volume * 100}%, transparent ${player.volume * 100}%)`);
+        if (player.volume > 0.5) $muteic.attr('class', icon.high);
+        else if (player.volume === 0) $muteic.attr('class', icon.mute);
         else $muteic.attr('class', icon.low);
     }
-  };
+  }
 
-  const navigate = function (direction) {
+  function navigate(direction) {
     if (!sources.length || sources.length === 1) return;
 
     let index = 0;
     let playable = false;
-    const dir = this.id || direction;
+    const dir = (this && this.id) || direction;
     if (current) {
       const max = sources.length - 1;
       index = sources.indexOf(sources.find((src) => current === src.name));
@@ -106,101 +132,143 @@ module.exports = (elements) => {
       }
     }
     current = sources[index].name;
-    $audio.src = sources[index].src;
+    player.src = sources[index].src;
     changeState(playable ? PLAY : STOP);
-  };
+  }
 
-  File.prototype.isAccepted = function (formats) {
-    const split = this.name.split('.');
-    const ext = split[split.length - 1];
-    return formats.indexOf(ext) > -1;
-  };
+  function formatTime(time) {
+    if (!time) return null;
+    const newTime = floor(time);
+    let hours = floor(newTime / 3600);
+    let minutes = floor((newTime - (hours * 3600)) / 60);
+    let seconds = newTime - (hours * 3600) - (minutes * 60);
 
-  const formatTime = function (time) {
-    let minute = time / 60;
-    let second = round(time % 60);
-    minute = minute.toFixed(0);
-    second = second <= 9 ? `0${second}` : second;
-    return `${minute}:${second}`;
-  };
+    if (hours < 10) hours = `0${hours}`;
+    if (minutes < 10) minutes = `0${minutes}`;
+    if (seconds < 10) seconds = `0${seconds}`;
+    return `${Number(hours) === 0 ? '' : `${hours}:`}${minutes}:${seconds}`;
+  }
 
-  const handleFiles = function () {
-    const { files, accept } = this;
+  function formatSize(size) {
+    let format = 'KB';
+    let newSize = size;
+    if (size / 1024 ** 2 >= 1) format = 'MB';
+    if (size / 1024 ** 3 >= 1) format = 'GB';
+    switch (format) {
+      case 'GB':
+        newSize /= 1024;
+      case 'MB':
+        newSize /= 1024;
+      default:
+        newSize /= 1024;
+    }
+    return `${Number.isInteger(newSize) ? newSize : newSize.toFixed(1)} ${format}`;
+  }
+
+  function loadFile(file) {
+    const { name, type } = file;
+    let fileName = name.split('.');
+    const ext = type ? fileName.pop() : 'mp3';
+    fileName = fileName.join('.');
+
+    function callback(resolve) {
+      const data = URL.createObjectURL(file);
+      let handle;
+      sources.push({
+        name: fileName,
+        src: data,
+      });
+      if (type.includes('image')) {
+        resolve({
+          name: fileName,
+          duration: '',
+          size: formatSize(file.size),
+          lastModified: new Date(file.lastModified).toLocaleDateString('en-US', dateOptions),
+          type: ext.toLowerCase(),
+        });
+      } else if (type.includes('video')) handle = $('<video>');
+      else handle = $('<audio>');
+      handle.attr('src', data).on('loadedmetadata', () => {
+        URL.revokeObjectURL(file);
+        resolve({
+          name: fileName,
+          duration: formatTime(handle[0].duration),
+          size: formatSize(file.size),
+          lastModified: new Date(file.lastModified).toLocaleDateString('en-US', dateOptions),
+          type: ext.toLowerCase(),
+        });
+      });
+    }
+    return new Promise(callback);
+  }
+
+  function handleFiles() {
+    const { files } = this;
 
     if (!files.length) return;
 
-    const formats = accept.split(',').map((ext) => ext.substring(1));
-    const validFiles = Array.from(files).filter((file) => file.isAccepted(formats));
-
-    if (!validFiles) return;
-
-    const table = $('<table>').appendTo($playlist.empty());
-
-    if (this.id === 'player-open__photo') {
-      console.log('photo');
-    } else {
-      // clean up
-      sources = [];
-      current = null;
-      $audio.removeAttribute('src');
-      changeState(STOP);
-
-      $prev.attr('class', `player-control ${validFiles.length > 1 ? '' : 'disabled'}`);
-      $next.attr('class', `player-control ${validFiles.length > 1 ? '' : 'disabled'}`);
-
-      // append header row
-      $('<tr>', {
-        appendTo: table,
-        append: [
-          $('<th>', { text: 'Title' }),
-          $('<th>', { text: 'Length' }),
-          $('<th>', { text: 'Size' }),
-          $('<th>', { text: 'Last Modified' }),
-          $('<th>', { text: 'Type' }),
-        ],
-      });
-
-      // append row for each file
-      $.each(validFiles, (index, file) => {
-        const reader = new FileReader();
-        const fileName = file.name.split('.');
-        const fileExt = fileName.pop();
-        reader.readAsDataURL(file);
-        reader.onloadend = (e) => {
-          const data = e.target.result;
-          const audio = new Audio(data);
-          audio.onloadedmetadata = () => {
-            sources.push({
-              name: fileName.join('.'),
-              src: data,
-            });
-            $('<tr>', {
-              appendTo: table,
-              append: [
-                $('<td>', { text: fileName.join('.') }),
-                $('<td>', { text: formatTime(audio.duration) }),
-                $('<td>', { text: `${(file.size / 1024 / 1024).toFixed(1)} MB` }),
-                $('<td>', { text: new Date(file.lastModified).toLocaleDateString('en-US', dateOptions) }),
-                $('<td>', { text: fileExt }),
-              ],
-              click() {
-                current = $(this).find('td:first-child').text();
-                $audio.src = sources.find((src) => current === src.name).src;
-                changeState(PLAY);
-              },
-            });
-
-            if (index === validFiles.length - 1) table.addSortWidget();
-          };
-        };
-      });
+    switch (this.id) {
+      case 'player-open__photo':
+        [player] = $photo;
+        $library.text('Pictures');
+        break;
+      case 'player-open__video':
+        [player] = $video;
+        $library.text('Videos');
+        break;
+      case 'player-open__audio':
+        [player] = $audio;
+        $library.text('Music');
+        break;
+      default:
     }
-  };
+
+    // clean up
+    sources = [];
+    current = null;
+    player.removeAttribute('src');
+    changeState(STOP);
+
+    $prev.removeClass('disabled');
+    $next.removeClass('disabled');
+
+    // append header row
+    const table = $('<table>').appendTo($playlist.empty());
+    $('<tr>', {
+      appendTo: table,
+      append: [
+        $('<th>', { text: 'Title' }),
+        $('<th>', { text: 'Length' }),
+        $('<th>', { text: 'Size' }),
+        $('<th>', { text: 'Last Modified' }),
+        $('<th>', { text: 'Type' }),
+      ],
+    });
+
+    // append row for each file
+    const promises = [];
+    Array.from(files).forEach((file) => {
+      const promise = loadFile(file);
+      promises.push(promise);
+      promise.then((data) => {
+        $('<tr>', {
+          appendTo: table,
+          append: Object.values(data).map((value) => $('<td>', { text: value })),
+          click() {
+            current = $(this).find('td:first-child').text();
+            player.src = sources.find((src) => current === src.name).src;
+            changeState(PLAY);
+          },
+        });
+      });
+    });
+    Promise.all(promises).then(() => table.addSortWidget());
+  }
 
   // EVENT HANDLERS
-  $audio.addEventListener('timeupdate', () => changeState(SEEK));
-  $audio.addEventListener('loadedmetadata', () => {
-    $progress.attr('max', $audio.duration);
+  $audio.add($video).on('timeupdate', () => changeState(SEEK));
+  $audio.add($video).on('loadedmetadata', () => {
+    $progress.attr('max', player.duration);
     $playlist.find('tr').removeClass('active');
     if (current) {
       $playlist
@@ -212,15 +280,15 @@ module.exports = (elements) => {
         .find('td:first-child').text();
     }
   });
-  $audio.addEventListener('ended', () => {
+  $audio.add($video).on('ended', () => {
     if (sources.length > 1) navigate('play-next');
     else if (isLoop) changeState(PLAY);
     else changeState(STOP);
   });
 
   $stop.click(() => changeState(STOP));
-  $mute.click(() => changeState($audio.muted ? null : MUTE));
-  $play.click(() => changeState($audio.paused ? PLAY : PAUSE));
+  $mute.click(() => changeState(player.muted ? null : MUTE));
+  $play.click(() => changeState(player.paused ? PLAY : PAUSE));
   $prev.click(navigate);
   $next.click(navigate);
   $loop.click(() => {
@@ -233,12 +301,14 @@ module.exports = (elements) => {
   });
 
   $volume.on('input', (e) => {
-    $audio.volume = e.target.value / 100;
+    if (!player) return;
+    player.volume = e.target.value / 100;
     changeState();
   });
 
   $progress.on('input', (e) => {
-    $audio.currentTime = e.target.value;
+    if (!player) return;
+    player.currentTime = e.target.value;
     changeState(SEEK);
   });
 

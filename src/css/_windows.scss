@@ -1,7 +1,7 @@
 /**** WINDOW ****/
 .window {
   @include position(absolute, 0);
-  @include size(260px);
+  @include size(36vmax);
   display: none;
   z-index: 1;
   flex-direction: column;
@@ -25,8 +25,8 @@
 
     > .title {
       font-size: small;
-      line-height: 20px;
-      padding-left: 23px;
+      line-height: 3.5vmax;
+      padding-left: 3.5vmax;
       text-shadow: 0 0 10px #fff, 0 0 10px #fff, 0 0 10px #fff, 0 0 10px #fff,
         0 0 10px #fff, 0 0 10px #fff, 0 0 10px #fff, 0 0 10px #fff;
       background-repeat: no-repeat;
@@ -40,8 +40,8 @@
       overflow: hidden;
 
       > .control {
-        width: 25px;
-        line-height: 15px;
+        width: 4vmax;
+        line-height: 2.6vmax;
         font-weight: bold;
         text-align: center;
         color: #fff;
@@ -60,11 +60,11 @@
 
       > .closewin {
         background-color: #d04a37;
-        width: 35px;
+        width: 6vmax;
       }
 
       > .maximize {
-        line-height: 12px;
+        line-height: 2.6vmax;
       }
     }
   }
@@ -139,7 +139,7 @@
 
   > label:before {
     @include position(absolute, calc(50% - 4px));
-    content: "";
+    content: '';
     border: 4px solid transparent;
     border-left-color: currentColor;
     margin-left: -10px;
@@ -203,7 +203,7 @@
   .active:before {
     @include position(absolute, calc(50% - 2.5px), 6px);
     @include size(5px);
-    content: "";
+    content: '';
     border-radius: 50%;
     background: currentColor;
   }
@@ -307,7 +307,7 @@
   overflow: scroll;
   resize: none;
   white-space: nowrap;
-  font-family: "lucida console", monospace;
+  font-family: 'lucida console', monospace;
   font-size: 10pt;
   border: 0;
   cursor: text;
@@ -554,6 +554,42 @@
     }
   }
 
+  &.now-playing {
+    .addrbar,
+    .toolbar,
+    #player-list {
+      display: none;
+    }
+
+    .container,
+    #player-footer {
+      background: #000 !important;
+    }
+
+    #player-controls {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: transparent;
+
+      > .player-control {
+        color: #fff;
+      }
+
+      #play-prev,
+      #play-next {
+        background: none;
+        box-shadow: none;
+      }
+    }
+  }
+
+  .player-overlay {
+    @include position(absolute, 50%, 50%);
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    max-height: 100vh;
+    display: none;
+  }
+
   #player-footer {
     background: #e1ebf5;
     padding: 0 10px 10px 10px;
@@ -775,7 +811,7 @@
   align-items: center;
 
   &:after {
-    content: "";
+    content: '';
     width: 100%;
     flex: 1;
     border-top: 1px solid #ccc;
@@ -850,7 +886,7 @@
 
     &:before,
     &:after {
-      content: "";
+      content: '';
       background: #000;
       display: block;
     }

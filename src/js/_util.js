@@ -1,6 +1,7 @@
-/* eslint-disable no-param-reassign */
 /* eslint-disable func-names */
-module.export = (function ($) {
+import $ from 'jquery';
+
+export default (() => {
   /**
    * sorttable.js (modified)
    * jQuery plug-in that allows sorting table by column
@@ -58,4 +59,4 @@ module.export = (function ($) {
   $.fn.flex = function () {
     return this.css('display', 'flex');
   };
-}(jQuery));
+})();

@@ -2,7 +2,8 @@
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="core.min.css">
     <script src="main.js"></script>
 </head>
@@ -15,7 +16,7 @@
     </div>
     <div id="logon">
         <div id="logon-wrapper" class="no-password">
-            <div id="user"><img src="resources/acc/user.webp" width="100"></div>
+            <div id="user"><img src="resources/acc/user.webp"></div>
             <div id="name">Administrator</div>
             <!-- <div id="input">
                 <input type="text" id="password" placeholder="khangnd" autofocus>
@@ -56,29 +57,8 @@
                         <div class="control closewin" data-target="#window-about">×</div>
                     </div>
                 </div>
-                <div class="container">
-                    <h2>
-                        Windows<sup class="text-50 text-normal">&reg;</sup> 7
-                        <small class="text-normal">Simulation</small>
-                    </h2>
-                    <p class="text-center text-75">version 1.14.0</p>
-                    <p>Functional features:</p>
-                    <ul>
-                        <li>Windows GUI</li>
-                        <li>User log on/log off</li>
-                        <li>Windows (open, close, minimize, maximize, move)</li>
-                        <li>Recycle Bin (UI)</li>
-                        <li>My Computer (UI)</li>
-                        <li>Calculator (Standard)</li>
-                        <li>Internet Explorer (Browse, Search Bing)</li>
-                        <li>Desktop Menu (View, Refresh, New Folder, Personalize) - hold your finger to open</li>
-                        <li>Personalize (Aero themes, Basic themes)</li>
-                        <li>Notepad (File, Edit, Format)</li>
-                        <li>Snipping Tool (Rectangular, Full-screen)</li>
-                        <li>Battery (Adjust brightness)</li>
-                        <li>Calendar</li>
-                        <li>Media Player (Music)</li>
-                    </ul>
+                <div class="container p-0">
+                    <embed src="about.html">
                 </div>
             </div>
             <div class="window" id="window-calc">
@@ -172,24 +152,21 @@
                 </div>
                 <div class="addrbar">
                     <div>
-                        <div class="button round back">&#x279C;</div>
-                        <div class="button round">&#x279C;</div>
+                        <div id="ie-prev" class="button round back">&#x279C;</div>
+                        <div id="ie-next" class="button round">&#x279C;</div>
                     </div>
                     <div class="input">
-                        <input type="text" id="webaddr">
+                        <input type="text" id="ie-addr">
                     </div>
                     <div class="input">
-                        <input type="search" id="bing" placeholder="Bing">
+                        <input type="search" id="ie-search" placeholder="Bing">
                     </div>
                 </div>
                 <div class="toolbar">
                     <div class="toolbar-item">Favorites</div>
                     <div class="toolbar-item">Bookmarks</div>
                 </div>
-                <div class="container p-0">
-                    <iframe id="webpage" frameborder="0" width="100%" height="100%"
-                        data-html2canvas-ignore="true"></iframe>
-                </div>
+                <div class="container p-0" id="ie-page"></div>
             </div>
             <div class="window" id="window-notepad" data-child="#window-font">
                 <div class="titlebar">
@@ -204,7 +181,7 @@
                     <div class="toolbar-item">File
                         <ul class="toolbar-item-lv2">
                             <li id="notepad-new">New</li>
-                            <li id="notepad-open" class="text-muted">Open</li>
+                            <li id="notepad-open">Open</li>
                             <li id="notepad-save" class="text-muted">Save</li>
                             <hr>
                             <li class="closewin" data-target="#window-notepad">Exit</li>
@@ -502,7 +479,7 @@
                 </div>
                 <div class="container direction" id="snip-result">Select snip mode to start snipping.</div>
             </div>
-            <div class="window small" id="window-player">
+            <div class="window" id="window-player">
                 <div class="titlebar">
                     <div class="title player">Windows Media Player</div>
                     <div class="controls">
@@ -518,7 +495,7 @@
                     </div>
                     <div class="addr pl-0">
                         <label>Library</label>
-                        <label>Music</label>
+                        <label id="player-library">Music</label>
                     </div>
                 </div>
                 <div class="toolbar">
@@ -529,16 +506,13 @@
                                 Manage libraries
                                 <div class="toolbar-item-lv3">
                                     <label for="player-open__audio">Music
-                                        <input id="player-open__audio" type="file" multiple hidden
-                                            accept=".mp3,.ogg,.wav">
+                                        <input id="player-open__audio" type="file" multiple hidden accept="audio/*">
                                     </label>
-                                    <label for="player-open__video" class="text-muted">Videos
-                                        <!-- <input id="player-open__video" type="file" multiple hidden
-                                            accept=".mp4,.webm,.ogg"> -->
+                                    <label for="player-open__video">Videos
+                                        <input id="player-open__video" type="file" multiple hidden accept="video/*">
                                     </label>
-                                    <label for="player-open__photo" class="text-muted">Pictures
-                                        <!-- <input id="player-open__photo" type="file" multiple hidden
-                                            accept=".jpg,.jpeg,.png,.gif,.bmp,.ico"> -->
+                                    <label for="player-open__photo">Pictures
+                                        <input id="player-open__photo" type="file" multiple hidden accept="image/*">
                                     </label>
                                 </div>
                             </li>
@@ -555,7 +529,8 @@
                         </noitem>
                     </div>
                     <audio id="player-audio" hidden></audio>
-                    <video id="player-video" hidden></video>
+                    <video id="player-video" class="player-overlay"></video>
+                    <img id="player-photo" class="player-overlay">
                 </div>
                 <div id="player-footer">
                     <input id="player-progress" type="range" value="0">

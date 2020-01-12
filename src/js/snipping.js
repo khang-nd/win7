@@ -1,9 +1,9 @@
 /* eslint-disable no-shadow */
 /* eslint-disable func-names */
-/* eslint-disable no-undef */
-const html2canvas = require('html2canvas');
+import $ from 'jquery';
+import html2canvas from 'html2canvas';
 
-module.exports = function (elements) {
+export default function (elements) {
   const $result = elements.result;
   const $window = elements.window;
   const $screen = elements.screen;
@@ -113,4 +113,4 @@ module.exports = function (elements) {
     e.target.href = image[0].toDataURL('image/png');
     e.target.download = 'capture.png';
   });
-};
+}

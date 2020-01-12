@@ -1,5 +1,5 @@
 /* eslint-disable no-eval */
-module.exports = (elements) => {
+export default (elements) => {
   const $result = elements.result;
   const $operation = elements.operation;
   let flag = false; // calculating flag
@@ -62,6 +62,6 @@ module.exports = (elements) => {
     }
     flag = true;
     $operation.val(operation);
-    $result.val(isNaN(result) ? 'Invalid input' : result);
+    $result.val(Number.isNaN(result) ? 'Invalid input' : result);
   });
 };

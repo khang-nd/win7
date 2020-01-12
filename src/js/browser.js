@@ -1,21 +1,29 @@
+import 'x-frame-bypass';
 // cannot print iframe url to addr bar due to cross-domain policy
-module.exports = (elements) => {
-  const PROXY = 'https://jsonp.afeld.me/?url=';
-  // const PROXY = '';
+export default (elements) => {
   const HOME = 'https://www.msn.com';
+  const SEARCH = 'https://www.bing.com/search?q=';
+
   const ADDR = elements.address;
-  const PAGE = elements.page;
   const BING = elements.bing;
   const START = elements.start;
+  const PAGE = elements.page;
+  // const PREV = elements.prev;
+  // const NEXT = elements.next;
   const { isEnter } = elements;
 
+  function load(url) {
+    ADDR.val(url);
+    PAGE.html(`<iframe src="${url}" frameBorder=0 is="x-frame-bypass"></iframe>`);
+  }
+
   START.click(() => {
-    if (!PAGE[0].src) {
-      PAGE[0].src = PROXY + HOME;
-      ADDR[0].value = HOME;
-    }
+    if (!PAGE.find('iframe')[0]) load(HOME);
   });
-  ADDR.focus((e) => e.target.select())
-    .keyup((e) => { if (isEnter(e)) PAGE[0].src = PROXY + e.target.value; });
-  BING.keyup((e) => { if (isEnter(e)) PAGE[0].src = `https://www.bing.com/search?q=${e.target.value}`; });
+  ADDR
+    .focus((e) => e.target.select())
+    .keyup((e) => {
+      if (isEnter(e)) load(e.target.value);
+    });
+  BING.keyup((e) => { if (isEnter(e)) load(SEARCH + e.target.value); });
 };

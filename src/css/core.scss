@@ -1,10 +1,11 @@
 // VARIABLES
-$iconPath: "resources/ico/";
-$bgPath: "resources/bg/";
-$accPath: "resources/acc/";
+$iconPath: 'resources/ico/';
+$bgPath: 'resources/bg/';
+$accPath: 'resources/acc/';
 $screenw: 100vw;
 $screenh: 100vh;
 $headline: #3083b7;
+$taskbar: 7vmax;
 
 // MIXINS
 @mixin transform($prop) {
@@ -49,7 +50,7 @@ $headline: #3083b7;
 @mixin text($prop) {
   .text-#{$prop} {
     @if (type-of($prop) ==number) {
-      font-size: $prop + unquote("%") !important;
+      font-size: $prop + unquote('%') !important;
     } @else if($prop==center or $prop==right or $prop==left) {
       text-align: $prop !important;
     } @else if($prop==normal or $prop==bold) {
@@ -111,7 +112,7 @@ $headline: #3083b7;
 %mask {
   @include size(100%);
   @include position(absolute, 0, 0);
-  content: "";
+  content: '';
   z-index: -1;
   background: rgba(0, 0, 0, 0.25);
 }
@@ -122,33 +123,33 @@ $headline: #3083b7;
 }
 
 /***** ICONS *****/
-@include icon("ie", "ie.webp");
-@include icon("about", "installer.webp");
-@include icon("calc", "calculator.webp");
-@include icon("paint", "paint.webp");
-@include icon("snipping", "snipping-tool.webp");
-@include icon("notepad", "notepad.webp");
-@include icon("computer", "my-computer.ico");
-@include icon("bin", "recycle-bin.ico");
-@include icon("file", "file.ico");
-@include icon("folder", "folder.ico");
-@include icon("personal", "personal.ico");
-@include icon("desktop", "desktop.ico");
-@include icon("disk-data", "disk-data.ico");
-@include icon("disk-usb", "disk-usb.ico");
-@include icon("disk-os", "disk-os.ico");
-@include icon("disk-cd", "disk-cd.ico");
-@include icon("cancel", "cancel.ico");
-@include icon("save", "save.ico");
-@include icon("player", "player.ico");
-@include icon("info", "info.ico");
+@include icon('ie', 'ie.webp');
+@include icon('about', 'installer.webp');
+@include icon('calc', 'calculator.webp');
+@include icon('paint', 'paint.webp');
+@include icon('snipping', 'snipping-tool.webp');
+@include icon('notepad', 'notepad.webp');
+@include icon('computer', 'my-computer.ico');
+@include icon('bin', 'recycle-bin.ico');
+@include icon('file', 'file.ico');
+@include icon('folder', 'folder.ico');
+@include icon('personal', 'personal.ico');
+@include icon('desktop', 'desktop.ico');
+@include icon('disk-data', 'disk-data.ico');
+@include icon('disk-usb', 'disk-usb.ico');
+@include icon('disk-os', 'disk-os.ico');
+@include icon('disk-cd', 'disk-cd.ico');
+@include icon('cancel', 'cancel.ico');
+@include icon('save', 'save.ico');
+@include icon('player', 'player.ico');
+@include icon('info', 'info.ico');
 
 // IMPORTS
-@import "desktop";
-@import "taskbar";
-@import "windows";
-@import "themes";
-@import "responsive";
+@import 'desktop';
+@import 'taskbar';
+@import 'windows';
+@import 'themes';
+@import 'responsive';
 
 /***** UTILITIES *****/
 #preload {
@@ -157,7 +158,7 @@ $headline: #3083b7;
   overflow: hidden;
   z-index: -1;
 
-  >img {
+  > img {
     @include size(0);
   }
 }
@@ -167,7 +168,7 @@ th.sortable {
   min-width: 55px;
 
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     margin-left: 3px;
     border: 5px solid transparent;
@@ -180,11 +181,11 @@ th.sortable {
 
   &.des:after {
     border-top-color: #000;
-    top: calc(50% - 3px)
+    top: calc(50% - 3px);
   }
 }
 
-input[type="search"] {
+input[type='search'] {
   @include size(100%);
   padding: 0 5px;
   padding-right: 18px;
@@ -205,6 +206,7 @@ input[type="search"] {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  position: fixed;
 }
 
 .grayout {
@@ -227,6 +229,10 @@ label {
 h2 {
   text-align: center;
   margin: 0;
+}
+
+iframe, embed {
+  @include size(100%);
 }
 
 .button.back {
@@ -255,8 +261,8 @@ h2 {
 }
 
 .bt {
-  padding: 1px 15px;
-  font-size: 75%;
+  padding: 0.3vmax 2.5vmax;
+  font-size: 80%;
 }
 
 .bt-primary {

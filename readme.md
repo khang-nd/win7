@@ -10,6 +10,7 @@ It supports both desktop and mobile devices.
 * [Touch Punch](http://touchpunch.furf.com/)
 * [html2canvas](https://html2canvas.hertzen.com/)
 * [Font Awesome](https://fontawesome.com/v4.7.0/)
+* [X-Frame-Bypass](https://github.com/niutech/x-frame-bypass) (web component)
 
 ## Bundlers
 
@@ -20,10 +21,6 @@ It supports both desktop and mobile devices.
 
 * [ESLint](https://eslint.org/)
 * [Live Sass Compiler](https://marketplace.visualstudio.com/items?itemName=ritwickdey.live-sass)
-
-## Known Bugs
-
-* [ ] Media Player is not working on mobile
 
 ## Change Log
 

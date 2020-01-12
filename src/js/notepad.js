@@ -1,9 +1,12 @@
-/* eslint-disable no-undef */
-const Calendar = require('./calendar');
+import $ from 'jquery';
+import Device from './_device';
+import { getDateTime } from './calendar';
 
-module.exports = (elements) => {
+export default (elements) => {
   const EDITOR = elements.editor;
   const NEW = elements.new;
+  const OPEN = elements.open;
+  // const SAVE = elements.save;
   const ALL = elements.all;
   const CUT = elements.cut;
   const UNDO = elements.undo;
@@ -19,18 +22,29 @@ module.exports = (elements) => {
 
   // file
   NEW.click(() => EDITOR.val(''));
+  OPEN.click(() => {
+    $('<input>', { type: 'file' })
+      .click()
+      .change((e) => {
+        const { files } = e.target;
+        if (!files.length) return;
+        if (files[0].size > 100 * 1024) {
+          Device.showToast('File size is limited to 100 KB');
+          return;
+        }
+        const reader = new FileReader();
+        reader.readAsText(files[0]);
+        reader.onload = (ev) => EDITOR.val(ev.target.result);
+      });
+  });
 
   // edit
-  const copy = () => document.execCommand('copy');
-  const del = () => document.execCommand('delete');
-  const cut = () => document.execCommand('cut');
-
   UNDO.click(() => document.execCommand('undo'));
   ALL.click(() => EDITOR.select());
   DATETIME.click(() => {
     const {
       h, m, D, M, Y,
-    } = new Calendar().getDateTime();
+    } = getDateTime();
     document.execCommand('insertText', false, `${h}:${m} ${D}/${M}/${Y}`);
   });
   EDITOR.blur((e) => {
@@ -41,9 +55,9 @@ module.exports = (elements) => {
       COPY.addClass('text-muted').off('click');
       DELETE.addClass('text-muted').off('click');
     } else {
-      CUT.removeClass('text-muted').on('click', cut);
-      COPY.removeClass('text-muted').on('click', copy);
-      DELETE.removeClass('text-muted').on('click', del);
+      CUT.removeClass('text-muted').on('click', () => document.execCommand('cut'));
+      COPY.removeClass('text-muted').on('click', () => document.execCommand('copy'));
+      DELETE.removeClass('text-muted').on('click', () => document.execCommand('delete'));
     }
   });
 

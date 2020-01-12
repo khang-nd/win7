@@ -1,19 +1,20 @@
 /* eslint-disable func-names */
 import 'font-awesome/css/font-awesome.min.css';
 
-import $, { Deferred, get, when } from 'jquery';
-import './util';
+import $ from 'jquery';
 import 'webpack-jquery-ui';
 import 'jquery-ui-touch-punch';
-
+import './_util';
+import './_misc';
+import Device from './_device';
 import SnippingTool from './snipping';
 import Calculator from './calculator';
 import Browser from './browser';
 import Notepad from './notepad';
-import Calendar from './calendar';
 import Window from './window';
 import Windows from './windows';
 import Player from './mediaplayer';
+import { getDateTime, navigate } from './calendar';
 
 $(() => {
   const isEnter = (e) => e.key === 'Enter' || e.which === 13;
@@ -34,7 +35,7 @@ $(() => {
   (function () {
     const loads = [];
     const loadImage = (src) => {
-      const deferred = Deferred();
+      const deferred = $.Deferred();
       $('<img>', {
         src,
         onload() { deferred.resolve(); },
@@ -58,13 +59,16 @@ $(() => {
         $LOGON.show();
       }, time);
     };
-    const loadIco = get(`${href}resources/ico`, fetchData);
-    const loadBg = get(`${href}resources/bg`, fetchData);
-    when(...loads, loadIco, loadBg).then(
+    const loadIco = $.get(`${href}resources/ico`, fetchData);
+    const loadBg = $.get(`${href}resources/bg`, fetchData);
+    $.when(...loads, loadIco, loadBg).then(
       () => proceed(7500),
-      () => proceed(random() * (18000 - 8000) + 8000),
+      () => proceed(random() * (17000 - 7500) + 7500),
     );
   }());
+
+  // $BOOT.hide();
+  // $LOGON.show();
 
   // LOGON
   (function () {
@@ -84,8 +88,8 @@ $(() => {
 
   // BATTERY
   const updateBattery = () => {
-    if (!navigator.getBattery) return;
-    navigator.getBattery().then((battery) => {
+    if (!Device.getBattery) return;
+    Device.getBattery().then((battery) => {
       const percent = battery.level * 100;
       $('#gauge')
         .height(`${percent}%`)
@@ -99,7 +103,7 @@ $(() => {
 
   // NETWORK
   const updateNetwork = () => {
-    if (navigator.onLine) {
+    if (Device.isOnline()) {
       $('#network > span').css({
         background: '#fff',
         'box-shadow': '0 0 0 1px #888',
@@ -123,11 +127,10 @@ $(() => {
     });
   }
 
-  const calendar = new Calendar();
   const updateTime = () => {
     const {
       h, m, s, D, M, Y,
-    } = calendar.getDateTime();
+    } = getDateTime();
     $('#time').text(`${h}:${m}`);
     $('#date').text(`${D}/${M}/${Y}`);
     $('#hour').text(`${h}:${m}:${s}`);
@@ -147,9 +150,7 @@ $(() => {
   const navCalendar = (e) => {
     const {
       d, D, M, Y, _M, _Y, month, _month, start, end,
-    } = calendar.navigate(
-      e,
-    );
+    } = navigate(e);
     $('#today').text(`${d}, ${month} ${D}, ${Y}`);
     $('#curr').text(`${_month} ${_Y}`);
     $('#days').empty();
@@ -204,15 +205,19 @@ $(() => {
 
   Browser({
     isEnter,
-    address: $('#webaddr'),
-    page: $('#webpage'),
-    bing: $('#bing'),
     start: $('[data-target="#window-ie"]'),
+    address: $('#ie-addr'),
+    page: $('#ie-page'),
+    bing: $('#ie-search'),
+    prev: $('#ie-prev'),
+    next: $('#ie-next'),
   });
 
   Notepad({
     editor: $('#notepad-editor'),
     new: $('#notepad-new'),
+    open: $('#notepad-open'),
+    save: $('#notepad-save'),
     cut: $('#notepad-cut'),
     all: $('#notepad-all'),
     undo: $('#notepad-undo'),
@@ -228,10 +233,12 @@ $(() => {
     videoBrowser: $('#player-open__video'),
     photoBrowser: $('#player-open__photo'),
     playlist: $('#player-list'),
+    library: $('#player-library'),
     volume: $('#volume > input'),
     progress: $('#player-progress'),
     audio: $('#player-audio'),
     video: $('#player-video'),
+    photo: $('#player-photo'),
     random: $('#random'),
     loop: $('#loop'),
     play: $('#play'),

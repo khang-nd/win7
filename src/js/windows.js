@@ -1,6 +1,6 @@
-/* eslint-disable no-undef */
-/* eslint-disable func-names */
-module.exports = function ($windows) {
+import $ from 'jquery';
+
+export default function ($windows) {
   $windows.draggable({
     containment: 'parent',
     handle: '.title',
@@ -71,4 +71,4 @@ module.exports = function ($windows) {
     $windows.removeClass('focused');
     $target.addClass('focused');
   };
-};
+}

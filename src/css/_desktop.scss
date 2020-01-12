@@ -1,13 +1,12 @@
 /***** BOOT *****/
 #boot {
-  @include position(fixed, 0, 0);
   @include size($screenw, $screenh);
   background: #000;
   pointer-events: none;
 
   video {
     @include size(auto);
-    @include position(absolute, 50%, 50%);
+    @include position(fixed, 50%, 50%);
     transform: translate(-50%, -50%);
   }
 }
@@ -17,7 +16,7 @@
   @include size($screenw, $screenh);
   display: none;
   text-align: center;
-  background: url($bgPath+"login.webp");
+  background: url($bgPath+'login.webp');
   background-position: center;
   background-size: cover;
 }
@@ -29,7 +28,7 @@
 
 #user {
   display: inline-flex;
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #3f3f3f;
   border-radius: 15%;
   box-shadow: inset 1px 1px 1px #fff, 0 0 15px rgba(0, 0, 0, 0.5);
@@ -42,6 +41,7 @@
   );
 
   > img {
+    width: 120px;
     border: 1px solid #3f3f3f;
     border-radius: 5px;
     box-shadow: 0 0 1px 1px #fff;
@@ -53,9 +53,9 @@
 }
 
 #name {
-  margin: 10px 0;
+  margin: 1.5vmax 0;
   color: #fff;
-  text-shadow: 0 1px 2px #000;
+  text-shadow: 0 0.4vmax 0.6vmax #000;
   font-weight: bold;
 }
 
@@ -91,7 +91,7 @@
 }
 
 #desktop {
-  @include size($screenw, calc(#{$screenh} - 36px));
+  @include size($screenw, calc(#{$screenh} - #{$taskbar}));
   position: fixed;
 }
 
@@ -134,22 +134,22 @@
 }
 
 .icons-sm .icon {
-  @include size(30px);
+  @include size(6vmax);
 }
 
 .icons-md .icon {
-  @include size(60px);
+  @include size(10vmax);
 }
 
 .icons-lg .icon {
-  @include size(120px);
+  @include size(15vmax);
 }
 
 #desktop-menu {
   z-index: 1;
   display: none;
   background: #fff;
-  font-size: 12px;
+  font-size: 90%;
   min-width: 130px;
   position: absolute;
   border: 1px solid #bbb;
@@ -176,7 +176,7 @@
 
 .has-sub {
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     right: 3px;
@@ -200,7 +200,7 @@
 .toolbar-subitem > li.active:before {
   @include position(absolute, calc(50% - 2.5px), 6px);
   @include size(5px);
-  content: "";
+  content: '';
   border-radius: 50%;
   background: currentColor;
 }

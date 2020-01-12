@@ -1,12 +1,20 @@
 # Change Log
 
-## 1.0.1
+## 1.15.0
+
+* Optimized size
+* Enhanced touch support
+* Windows Media Player: play videos, photos, fix for music player.
+* Notepad: open file
+* Bug fixes
+
+## 1.14.1
 
 * Switch from Browserify to Webpack as the application bundler.
 
-## 1.0.0
+## 1.14.0
 
-First version with some raw interface and functionalities
+First version with an interface and some raw functionalities
 
 * Windows GUI
 * User log on/log off

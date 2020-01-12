@@ -1,14 +1,15 @@
 /**** TASKBAR ****/
+$margin: 0.5vmax;
 #taskbar {
   @include position(fixed, $left: 0, $bottom: 0);
-  @include size(100%, 36px);
+  @include size(100%, $taskbar);
   z-index: 1;
   box-sizing: border-box;
-  border-top: 1px solid #555;
+  border-top: 1px solid #666;
   background: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.8),
-    transparent 3px
+    rgba(255, 255, 255, 0.7),
+    transparent 0.5vmax
   );
 
   &:before {
@@ -22,7 +23,7 @@
 
   &.left:before {
     @include position(absolute, 0, 0, 0, 0);
-    content: "";
+    content: '';
     background: linear-gradient(
         135deg,
         rgba(255, 255, 255, 0.6),
@@ -35,12 +36,13 @@
   }
 
   &.left {
-    @include size(45px, 100%);
+    @include size($taskbar, 95%);
+    float: left;
     position: relative;
-    margin-right: 3px;
+    margin-right: $margin;
 
     background: {
-      size: 60%;
+      size: 70%;
       position: center center;
       repeat: no-repeat;
     }
@@ -48,17 +50,17 @@
 
   &.right {
     height: 100%;
-    margin-left: 8px;
     float: right;
+    margin-left: $margin * 2;
   }
 }
 
 #start-button {
-  @include size(30px);
-  margin: 3px;
-  background: url($iconPath+"start-button.webp") no-repeat;
-  background-size: contain;
+  @include size($taskbar - 1.5vmax);
+  margin: $margin;
   float: left;
+  background: url($iconPath+'start-button.webp') no-repeat;
+  background-size: contain;
 
   &.active,
   &:hover {
@@ -67,7 +69,7 @@
 }
 
 #show-desktop {
-  width: 15px;
+  width: 3vmax;
   border-radius: 3px;
   background: linear-gradient(
       135deg,
@@ -85,13 +87,14 @@
   flex-direction: column;
   text-align: center;
   justify-content: center;
-  font-size: small;
+  font-size: 90%;
 }
 
 #battery {
-  @include size(11px, 16px);
+  $size: $taskbar / 2.5;
+  @include size($size / 1.5, $size);
   position: relative;
-  margin-top: 10px;
+  margin-top: ($taskbar - $size) / 2;
   border: 1px solid #fff;
   border-radius: 2px;
   padding: 1px;
@@ -101,8 +104,8 @@
 
   &:before {
     @include position(absolute, $left: 25%, $bottom: 100%);
-    @include size(50%, 2px);
-    content: "";
+    @include size(50%, $size / 8);
+    content: '';
     background: #fff;
   }
 }
@@ -114,11 +117,12 @@
 }
 
 #network {
-  margin-top: 10px;
+  $size: $taskbar / 14;
+  margin-top: ($taskbar - $size * 5) / 2;
 
   > span {
     display: inline-block;
-    width: 2px;
+    width: $size;
     background: #fff;
     margin-left: 1px;
     box-shadow: 0 0 0 1px #888;
@@ -126,7 +130,7 @@
 
   @mixin netbar($child) {
     > span:nth-child(#{$child}) {
-      height: #{(12 / 5 * $child) + "px"};
+      height: $size * $child;
     }
   }
 
@@ -261,7 +265,7 @@
     @include position(absolute, $left: 0);
     @include size(100%, 20px);
     @include transform(rotateX(65deg));
-    content: "";
+    content: '';
     border-radius: 50%;
     box-shadow: 0 -4px 0 1.5px #aaa;
   }

@@ -1,53 +1,53 @@
 $map: (
-  "aero-1": (
-    "bg": url($bgPath+"default.webp"),
-    "colors": rgba(170, 209, 251, 0.6) rgba(170, 209, 251, 0.3)
+  'aero-1': (
+    'bg': url($bgPath+'default.webp'),
+    'colors': rgba(170, 209, 251, 0.6) rgba(170, 209, 251, 0.3),
   ),
-  "aero-2": (
-    "bg": url($bgPath+"architecture.webp"),
-    "colors": rgba(85, 132, 200, 0.6) rgba(85, 132, 200, 0.3)
+  'aero-2': (
+    'bg': url($bgPath+'architecture.webp'),
+    'colors': rgba(85, 132, 200, 0.6) rgba(85, 132, 200, 0.3),
   ),
-  "aero-3": (
-    "bg": url($bgPath+"landscape.webp"),
-    "colors": rgba(171, 171, 171, 0.6) rgba(171, 171, 171, 0.3)
+  'aero-3': (
+    'bg': url($bgPath+'landscape.webp'),
+    'colors': rgba(171, 171, 171, 0.6) rgba(171, 171, 171, 0.3),
   ),
-  "aero-4": (
-    "bg": url($bgPath+"nature.webp"),
-    "colors": rgba(179, 155, 207, 0.6) rgba(179, 155, 207, 0.3)
+  'aero-4': (
+    'bg': url($bgPath+'nature.webp'),
+    'colors': rgba(179, 155, 207, 0.6) rgba(179, 155, 207, 0.3),
   ),
-  "basic-1": (
-    "bg": url($bgPath+"default.webp"),
-    "colors": #a7bfd7 #a7bfd7 #fff
+  'basic-1': (
+    'bg': url($bgPath+'default.webp'),
+    'colors': #a7bfd7 #a7bfd7 #fff,
   ),
-  "basic-2": (
-    "bg": #3b6ea4,
-    "colors": #d0d0d0 #0f75c9 #fff
+  'basic-2': (
+    'bg': #3b6ea4,
+    'colors': #d0d0d0 #0f75c9 #fff,
   ),
-  "basic-3": (
-    "bg": #000,
-    "colors": #fff #81007f #000
+  'basic-3': (
+    'bg': #000,
+    'colors': #fff #81007f #000,
   ),
-  "basic-4": (
-    "bg": #fff,
-    "colors": #fff #000 #fff
-  )
+  'basic-4': (
+    'bg': #fff,
+    'colors': #fff #000 #fff,
+  ),
 );
 
 @mixin theme($theme) {
-  $isAero: str-index($theme, "basic") ==null;
+  $isAero: str-index($theme, 'basic') ==null;
   $this: map-get($map, $theme);
-  $bg: map-get($this, "bg");
-  $colors: map-get($this, "colors");
+  $bg: map-get($this, 'bg');
+  $colors: map-get($this, 'colors');
 
   // THEME PREVIEWS
   ##{$theme} {
     > .theme-bg {
-      @if ($isAero or $theme== "basic-1") {
+      @if ($isAero or $theme== 'basic-1') {
         background-image: $bg;
       } @else {
         background-color: $bg;
 
-        @if ($theme== "basic-4") {
+        @if ($theme== 'basic-4') {
           box-shadow: inset 0 0 0 1px #999;
         }
       }
@@ -63,22 +63,22 @@ $map: (
       } @else {
         background: nth($colors, 1);
 
-        @if ($theme != "basic-3") {
+        @if ($theme != 'basic-3') {
           box-shadow: 0.5px 0.5px 0 1px #000;
         }
 
-        @if ($theme== "basic-1") {
+        @if ($theme== 'basic-1') {
           box-shadow: 0.5px 0.5px 0 1px #000, inset 0 0 0 0.5px #fff;
           border-radius: 4px 4px 0 0;
           padding: 3px;
-        } @else if($theme== "basic-2") {
+        } @else if($theme== 'basic-2') {
           padding: 1px;
         } @else {
           padding: 0.5px;
         }
 
         &:before {
-          @if ($theme== "basic-1") {
+          @if ($theme== 'basic-1') {
             box-shadow: inset 0 0 0 4px nth($colors, 2),
               inset -7px -7px 0 nth($colors, 2);
           } @else {
@@ -89,7 +89,7 @@ $map: (
         }
 
         &:after {
-          @if ($theme== "basic-1") {
+          @if ($theme== 'basic-1') {
             box-shadow: inset 0 0 0 4px nth($colors, 3),
               inset -19px -19px 0 nth($colors, 3);
           } @else {
@@ -97,7 +97,7 @@ $map: (
               inset -21px -21px 0 nth($colors, 3);
           }
 
-          @if ($theme== "basic-3") {
+          @if ($theme== 'basic-3') {
             background: #fff;
           }
         }
@@ -108,7 +108,7 @@ $map: (
   // THEME APPEARANCES
   .#{$theme} {
     #windows {
-      @if ($isAero or $theme== "basic-1") {
+      @if ($isAero or $theme== 'basic-1') {
         background-image: $bg;
       } @else {
         background-color: $bg;
@@ -143,12 +143,12 @@ $map: (
         border-top: 0;
       }
     } @else {
-      @if ($theme== "basic-1" or $theme== "basic-2") {
+      @if ($theme== 'basic-1' or $theme== 'basic-2') {
         .window,
         #taskbar,
         #start-menu,
         .taskbar-popup {
-          @if ($theme== "basic-2") {
+          @if ($theme== 'basic-2') {
             background: nth($colors, 1);
           } @else {
             background-color: nth($colors, 1);
@@ -156,7 +156,7 @@ $map: (
         }
       }
 
-      @if ($theme== "basic-1") {
+      @if ($theme== 'basic-1') {
         .window:before {
           background: linear-gradient(rgba(0, 0, 0, 0.2), transparent 5%);
         }
@@ -166,8 +166,8 @@ $map: (
         }
 
         #start-button {
-          @include size(40px);
-          margin: -6px 3px 0;
+          @include size(7vmax);
+          margin: -1vmax $margin 0;
         }
 
         .titlebar > .controls {
@@ -175,7 +175,7 @@ $map: (
         }
 
         .controls > .control {
-          width: 26px !important;
+          width: 3.5vmax !important;
           margin-left: 3px;
           border: 1px solid #666;
           border-radius: 3px;
@@ -192,9 +192,9 @@ $map: (
           border: 2px solid;
           border-radius: 0;
 
-          @if ($theme== "basic-2") {
+          @if ($theme== 'basic-2') {
             border-color: #fff #333 #333 #fff;
-          } @else if($theme== "basic-3") {
+          } @else if($theme== 'basic-3') {
             border-color: #fff;
           } @else {
             border-color: #000;
@@ -208,32 +208,32 @@ $map: (
         }
 
         #start-button {
-          @include size(70px, 26px);
-          line-height: 22px;
+          @include size(85px, auto);
+          line-height: 35px;
           margin: 5px;
           box-sizing: border-box;
-          background-image: url($iconPath+"start-button-classic.webp");
+          background-image: url($iconPath+'start-button-classic.webp');
           background-position: 3px;
 
           &:hover,
           &.active {
             filter: none;
 
-            @if ($theme== "basic-2") {
+            @if ($theme== 'basic-2') {
               border-color: #333 #fff #fff #333;
             }
           }
 
           &:after {
-            content: "Start";
-            padding-left: 26px;
+            content: 'Start';
+            padding-left: 38px;
             font-weight: bold;
           }
         }
 
         #show-desktop {
-          width: 20px;
-          background: center center url($iconPath+"desktop.ico") no-repeat;
+          width: 3vmax;
+          background: center center url($iconPath+'desktop.ico') no-repeat;
           background-size: contain;
         }
       }
@@ -244,17 +244,17 @@ $map: (
 /***** THEMES *****/
 
 /* AERO 1 - WINDOWS 7 */
-@include theme("aero-1");
+@include theme('aero-1');
 /* AERO-2 - ARCHITECTURE */
-@include theme("aero-2");
+@include theme('aero-2');
 /* AERO-3 - LANDSCAPES */
-@include theme("aero-3");
+@include theme('aero-3');
 /* AERO-4 - NATURE */
-@include theme("aero-4");
+@include theme('aero-4');
 /* BASIC-1 - WINDOWS 7 */
-@include theme("basic-1");
+@include theme('basic-1');
 /* BASIC-2 - WINDOWS CLASSIC */
-@include theme("basic-2");
+@include theme('basic-2');
 
 .basic-2 {
   %hover {
@@ -307,7 +307,7 @@ $map: (
       top: 0;
 
       > .control {
-        width: 20px;
+        width: 3vmax;
         background: #d0d0d0;
         color: #000;
         text-shadow: none;
@@ -397,11 +397,16 @@ $map: (
     > .container {
       @extend %noImage;
     }
+
+    #player-footer {
+      background: #fff;
+      border: 0;
+    }
   }
 }
 
 /* BASIC-3 - CONTRAST BLACK */
-@include theme("basic-3");
+@include theme('basic-3');
 
 .basic-3 {
   color: #fff;
@@ -499,8 +504,12 @@ $map: (
   background-image: none;
 }
 
+.basic-3 #window-player #player-footer {
+  background: #000;
+}
+
 /* BASIC-4 - CONTRAST WHITE */
-@include theme("basic-4");
+@include theme('basic-4');
 
 /* BASIC-4 - CONTRAST WHITE */
 .basic-4,
@@ -601,4 +610,8 @@ $map: (
 
 .basic-4 #window-player > .container {
   background-image: none;
+}
+
+.basic-4 #window-player #player-footer {
+  background: #fff;
 }
