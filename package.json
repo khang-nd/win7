@@ -23,7 +23,7 @@
     "eslint-plugin-import": "^2.18.2",
     "style-loader": "^1.1.1",
     "webpack": "^4.41.4",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "file-loader": "^5.0.2",
